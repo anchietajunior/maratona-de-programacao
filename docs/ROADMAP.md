@@ -26,10 +26,12 @@ login, os tokens do `docs/design.md` no tema do Tailwind e o locale `pt-BR`.
 **A Equipe é o `User`** — decidido, ver [ADR-0011](adr/0011-equipe-e-o-user.md). Não haverá
 tabela `teams`: `staff: false` compete, `staff: true` avalia.
 
-**Nenhuma tabela do domínio existe ainda** — `contests`, `problems`, `testcases` e
-`submissions` seguem pendentes.
+**O esquema do domínio existe.** `contests`, `problems`, `testcases` e `submissions`
+criadas e migradas; `testcases.input` e `expected_output` são `blob` sem collation,
+conferido no banco. São tabelas nuas — nenhum modelo, associação ou validação sobre elas
+ainda.
 
-Próxima task: `1.1 — Migrations`.
+Próxima task: `1.2 — Modelos e associações`.
 
 ---
 
@@ -59,13 +61,19 @@ Próxima task: `1.1 — Migrations`.
 Sem lógica de negócio ainda: tabelas, associações e o mundo de fixtures que todos os
 testes vão usar.
 
-- [ ] **1.1 Migrations** — `contests`, `problems`, `testcases`, `submissions`. Não há
+- [x] **1.1 Migrations** — `contests`, `problems`, `testcases`, `submissions`. Não há
       `teams`: a Equipe é o `User` (ADR-0011), que já existe
   - ~~`users.name`~~ — feito junto com a Fase 4
   - `testcases.input` e `testcases.expected_output` em colunas **binárias** (ADR-0003)
   - `submissions.code` em `text` com `utf8mb4`
   - `problems.difficulty` como enum (easy/medium/hard); os pontos derivam dela
   - `contests.started_at` / `ended_at` — o relógio é relativo ao início real (ADR-0008)
+  - Decidido aqui: `problems.position` (único junto com `contest_id`) é a identidade do
+    Problema na Competição, e é de onde o `to_param` sai na 1.2 — `id` não serve, o ensaio
+    da 10.6 desloca a numeração
+  - `problems.reference_solution` e `testcases.expected_output` nascem `null: false`: pelo
+    ADR-0003 a saída é gerada pela referência **antes** de o Testcase existir
+  - `submissions.verdict` nulo significa "ainda não julgado" (Fase 2)
 - [ ] **1.2 Modelos e associações** — núcleo curto, sem concerns ainda. `User.competing`
       (`staff: false`) é o escopo por onde toda consulta de competição passa
 - [ ] **1.3 `Current`** — `session` já deriva `user`, conforme `docs/rules/architecture.md`
