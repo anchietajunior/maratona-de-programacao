@@ -14,8 +14,17 @@ vocabulário (`CONTEXT.md`), nem regras de como construir (`docs/rules/`).
 ## Onde estamos
 
 **Fase 1 — Esquema e modelos.** Fundação pronta: domínio documentado, regras de
-engenharia escritas, juiz funcionando e testado contra Docker. O app Rails está limpo e
-conectado ao MySQL, mas **não existe nenhuma migration, modelo, rota ou tela**.
+engenharia escritas, juiz funcionando e testado contra Docker.
+
+A autenticação foi antecipada da Fase 4: existem `users` (nickname, senha, `staff`) e
+`sessions`, com o concern `Authentication` e o `Current` do `rails generate
+authentication`. Existe também uma página inicial pública (`/`) com link para o
+regulamento e para o login, os tokens do `docs/design.md` no tema do Tailwind e o
+locale `pt-BR`.
+
+**Nenhuma tabela do domínio existe ainda** — `contests`, `problems`, `testcases` e
+`submissions` seguem pendentes. Ver a pergunta 3 em "Bloqueios abertos": `users.staff`
+substitui ou convive com `teams`?
 
 Próxima task: `1.1 — Migrations`.
 
@@ -38,6 +47,7 @@ Próxima task: `1.1 — Migrations`.
 - [x] Regras de engenharia — `docs/rules/`, `docs/design.md`
 - [x] `lib/judge.rb` — sete veredictos, 15 testes contra Docker real
 - [x] App Rails enxuto (11 frameworks removidos), MySQL 9.7.1, RBS inline + `sig/`
+- [x] Página inicial pública, tokens do `docs/design.md` no tema do Tailwind, locale `pt-BR`
 
 ---
 
@@ -90,7 +100,9 @@ problemas é o caminho crítico real do evento, não o software.
 
 ## Fase 4 — Autenticação e sessão
 
-- [ ] **4.1 `Authentication` concern** + login por credencial de equipe (Art. 21)
+- [x] **4.1 `Authentication` concern** + login por credencial (Art. 21) — `nickname`
+      (`equipe01`) em vez de e-mail; `users.staff` é a base da autorização. O fluxo de
+      recuperação de senha do gerador foi removido: o app não tem Action Mailer
 - [ ] **4.2 Sessão única por equipe** — login novo é **bloqueado** enquanto houver sessão
       ativa (ADR-0009)
 - [ ] **4.3 Expiração por inatividade** — obrigatória, senão navegador travado tranca a
@@ -181,12 +193,16 @@ Nada aqui é código. É o que costuma explodir por ficar para a véspera.
 
 ## Bloqueios abertos
 
-Duas perguntas para a coordenação. Nenhuma trava as Fases 1-6.
+Duas perguntas para a coordenação (1 e 2). Nenhuma trava as Fases 1-6.
 
 1. **Art. 20** — se a Competição começar 19h20, encerra 22h20 (3h de duração) ou 22h00
    (horário fixo)? Assumido: duração de 3h (ADR-0008). *Bloqueia 7.1.*
 2. **Art. 27** — depois de obter AC num Problema, a equipe ainda pode submeter nele?
    Assumido: não, o Problema fecha. *Bloqueia 7.4.*
+3. **`User` × `Team`** — decisão de arquitetura, não da coordenação. A autenticação
+   criou `users` com `staff`, enquanto `CONTEXT.md` diz que quem compete é a **Equipe**
+   (e evita "usuário"). `Team` vira um registro próprio apontando para o `User`, ou
+   `users.staff = false` *é* a Equipe? *Bloqueia 1.1 e 1.2.*
 
 ---
 

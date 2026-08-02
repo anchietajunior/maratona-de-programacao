@@ -23,8 +23,9 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="bg-canvas text-ink font-sans text-body-md antialiased">
+    <main class="mx-auto w-full max-w-content px-5 py-section">
+      <%= render "layouts/flashes" %>
       <%= yield %>
     </main>
   </body>

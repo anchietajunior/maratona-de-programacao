@@ -1,0 +1,25 @@
+<% content_for :title, t(".title") %>
+
+<header>
+  <p class="text-caption-uppercase uppercase text-muted"><%= t(".eyebrow") %></p>
+  <h1 class="mt-base text-display-mega-mobile sm:text-display-mega-tablet lg:text-display-mega"><%= t(".title") %></h1>
+  <p class="mt-lg max-w-prose text-body-md text-body"><%= t(".subtitle") %></p>
+
+  <div class="mt-xl flex flex-wrap items-center gap-base">
+    <%= link_to t(".sign_in"), new_session_path, class: "rounded-md bg-primary px-md py-sm text-button text-on-primary" %>
+    <%= link_to t(".regulation"), "/regulamento.pdf", class: "rounded-md border border-hairline-strong bg-surface-card px-md py-sm text-button text-ink" %>
+  </div>
+</header>
+
+<section class="mt-section grid gap-lg sm:grid-cols-2 lg:grid-cols-3">
+  <% %w[ problems duration language ].each do |fact| %>
+    <article class="rounded-lg border border-hairline bg-surface-card p-lg">
+      <h2 class="text-title-md"><%= t(".facts.#{fact}.title") %></h2>
+      <p class="mt-xs text-body-sm text-body"><%= t(".facts.#{fact}.detail") %></p>
+    </article>
+  <% end %>
+</section>
+
+<footer class="mt-section border-t border-hairline pt-lg text-body-sm text-muted">
+  <%= t(".footer") %>
+</footer>

@@ -1,1 +1,88 @@
 @import "tailwindcss";
+
+/* Design tokens from docs/design.md. Only these names appear in markup. */
+@theme {
+  --color-canvas: #f7f7f4;
+  --color-canvas-soft: #fafaf7;
+  --color-surface-card: #ffffff;
+  --color-surface-strong: #e6e5e0;
+
+  --color-hairline: #e6e5e0;
+  --color-hairline-soft: #efeee8;
+  --color-hairline-strong: #cfcdc4;
+
+  --color-ink: #26251e;
+  --color-body: #5a5852;
+  --color-muted: #807d72;
+  --color-muted-soft: #a09c92;
+
+  --color-primary: #f54e00;
+  --color-primary-active: #d04200;
+  --color-on-primary: #ffffff;
+
+  --color-success: #1f8a65;
+  --color-error: #cf2d56;
+
+  --font-sans: Inter, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-display-mega: 72px;
+  --text-display-mega--line-height: 1.1;
+  --text-display-mega--letter-spacing: -2.16px;
+  --text-display-mega--font-weight: 400;
+
+  /* Hero h1 collapses 72 → 56 → 32px across breakpoints (docs/design.md → Responsive). */
+  --text-display-mega-tablet: 56px;
+  --text-display-mega-tablet--line-height: 1.1;
+  --text-display-mega-tablet--letter-spacing: -1.68px;
+  --text-display-mega-tablet--font-weight: 400;
+
+  --text-display-mega-mobile: 32px;
+  --text-display-mega-mobile--line-height: 1.15;
+  --text-display-mega-mobile--letter-spacing: -0.96px;
+  --text-display-mega-mobile--font-weight: 400;
+
+  --text-display-lg: 36px;
+  --text-display-lg--line-height: 1.2;
+  --text-display-lg--letter-spacing: -0.72px;
+  --text-display-lg--font-weight: 400;
+
+  --text-display-md: 26px;
+  --text-display-md--line-height: 1.25;
+  --text-display-md--letter-spacing: -0.325px;
+  --text-display-md--font-weight: 400;
+
+  --text-title-md: 18px;
+  --text-title-md--line-height: 1.4;
+  --text-title-md--font-weight: 600;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 1.5;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 1.5;
+
+  --text-caption-uppercase: 11px;
+  --text-caption-uppercase--line-height: 1.4;
+  --text-caption-uppercase--letter-spacing: 0.88px;
+  --text-caption-uppercase--font-weight: 600;
+
+  --text-button: 14px;
+  --text-button--line-height: 1;
+  --text-button--font-weight: 500;
+
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-base: 16px;
+  --spacing-md: 20px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  --spacing-section: 80px;
+
+  --container-content: 1200px;
+}

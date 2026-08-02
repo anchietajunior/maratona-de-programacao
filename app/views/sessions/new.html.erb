@@ -1,0 +1,28 @@
+<% content_for :title, t(".title") %>
+
+<div class="mx-auto max-w-[480px]">
+  <h1 class="text-display-md"><%= t(".title") %></h1>
+  <p class="mt-sm text-body-sm text-body"><%= t(".subtitle") %></p>
+
+  <%= form_with url: session_url, class: "mt-xl" do |form| %>
+    <div class="mb-base">
+      <%= form.label :nickname, t(".nickname"), class: "block text-body-sm text-body" %>
+      <%= form.text_field :nickname, required: true, autofocus: true, autocomplete: "username",
+            autocapitalize: "off", spellcheck: false, placeholder: t(".nickname_placeholder"),
+            value: params[:nickname],
+            class: "mt-xxs block h-[44px] w-full rounded-md border border-hairline-strong bg-surface-card px-base text-body-md text-ink focus:outline-primary" %>
+    </div>
+
+    <div class="mb-lg">
+      <%= form.label :password, t(".password"), class: "block text-body-sm text-body" %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", maxlength: 72,
+            class: "mt-xxs block h-[44px] w-full rounded-md border border-hairline-strong bg-surface-card px-base text-body-md text-ink focus:outline-primary" %>
+    </div>
+
+    <%= form.submit t(".submit"), class: "h-[40px] w-full cursor-pointer rounded-md bg-primary px-md text-button text-on-primary" %>
+  <% end %>
+
+  <p class="mt-lg text-body-sm">
+    <%= link_to t(".back"), root_path, class: "text-muted underline" %>
+  </p>
+</div>

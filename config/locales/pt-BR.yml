@@ -1,0 +1,31 @@
+pt-BR:
+  home:
+    show:
+      eyebrow: "UniRios · Sistemas de Informação"
+      title: "7ª Maratona de Programação"
+      subtitle: "Equipes resolvem problemas algorítmicos em Python 3 durante três horas, no laboratório. O sistema julga cada submissão na hora; a classificação fica em sigilo até a cerimônia de premiação."
+      sign_in: "Entrar na plataforma"
+      regulation: "Ler o regulamento"
+      facts:
+        problems:
+          title: "10 problemas"
+          detail: "Quatro fáceis (10 pontos), quatro médios (20) e dois difíceis (30) — 180 pontos possíveis. A ordem de resolução é livre."
+        duration:
+          title: "3 horas"
+          detail: "Sem interrupção, contadas a partir do instante em que a Comissão Organizadora inicia a Competição."
+        language:
+          title: "Python 3"
+          detail: "Cada equipe usa um único computador e uma credencial própria, de uso exclusivo. O código é colado no sistema."
+      footer: "Em caso de divergência, o Regulamento da 7ª Maratona é a autoridade."
+  sessions:
+    new:
+      title: "Entrar"
+      subtitle: "Use a credencial da sua equipe. Ela é de uso exclusivo — compartilhá-la é desclassificação imediata."
+      nickname: "Identificação"
+      nickname_placeholder: "equipe01"
+      password: "Senha"
+      submit: "Entrar"
+      back: "Voltar à página inicial"
+    create:
+      failed: "Identificação ou senha inválida."
+      rate_limited: "Tentativas demais. Espere alguns minutos e tente de novo."

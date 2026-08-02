@@ -1,0 +1,7 @@
+<% if notice = flash[:notice] %>
+  <p id="notice" class="mb-lg inline-block rounded-md border border-hairline bg-surface-card px-4 py-2 text-body-sm text-success"><%= notice %></p>
+<% end %>
+
+<% if alert = flash[:alert] %>
+  <p id="alert" class="mb-lg inline-block rounded-md border border-hairline bg-surface-card px-4 py-2 text-body-sm text-error"><%= alert %></p>
+<% end %>

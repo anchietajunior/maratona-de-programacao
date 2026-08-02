@@ -1,0 +1,14 @@
+<% password_digest = BCrypt::Password.create("12345") %>
+
+turing:
+  nickname: equipe01
+  password_digest: <%= password_digest %>
+
+hopper:
+  nickname: equipe02
+  password_digest: <%= password_digest %>
+
+technical_committee:
+  nickname: comissao
+  password_digest: <%= password_digest %>
+  staff: true
