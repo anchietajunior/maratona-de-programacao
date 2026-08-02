@@ -2,6 +2,13 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> ## Start here: `docs/ROADMAP.md`
+>
+> It is the project's physical memory of **where the implementation currently stands** —
+> phases, task checkboxes, milestones, and open blockers. Read it before picking up work,
+> and **update it in the same edit that completes a task**. A stale roadmap lies with
+> confidence.
+
 ## Overview
 
 Automated judging system for the 7th Programming Marathon of the Information Systems
