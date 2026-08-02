@@ -1,8 +1,12 @@
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+# RBS inline signatures are written as `#:` with no space. Without this, RuboCop
+# autocorrects them to `# :` and rbs-inline stops recognizing them.
+Layout/LeadingCommentSpace:
+  AllowRBSInlineAnnotation: true
+
+# Generated from the inline annotations — not ours to style.
+AllCops:
+  Exclude:
+    - sig/**/*

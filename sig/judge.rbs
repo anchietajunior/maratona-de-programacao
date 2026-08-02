@@ -1,0 +1,75 @@
+# Generated from lib/judge.rb with RBS::Inline
+
+# Runs submitted Python code against a problem's test cases and returns one of the seven
+# verdicts defined in Art. 26 of the regulation.
+#
+# Sandbox rationale: docs/adr/0004-execucao-em-conteiner-descartavel.md
+# Output comparison: docs/adr/0003-saida-esperada-gerada-comparacao-exata.md
+class Judge
+  IMAGE: ::String
+
+  TIME_LIMIT: ::Integer
+
+  MEMORY: ::String
+
+  CE_EXIT: ::Integer
+
+  TLE_EXIT: ::Integer
+
+  OOM_EXIT: ::Integer
+
+  # The outcome of judging one submission.
+  class Result
+    attr_reader verdict: String
+
+    attr_reader failed_case: Integer?
+
+    attr_reader message: String?
+
+    # : (verdict: String, ?failed_case: Integer?, ?message: String?) -> void
+    def initialize: (verdict: String, ?failed_case: Integer?, ?message: String?) -> void
+
+    # : () -> bool
+    def accepted?: () -> bool
+
+    # : () -> String
+    def to_s: () -> String
+  end
+
+  # : (?image: String, ?time_limit: Integer, ?memory: String) -> void
+  def initialize: (?image: String, ?time_limit: Integer, ?memory: String) -> void
+
+  # Judges code against cases, each a hash of :input and :expected.
+  # : (String, Array[Hash[Symbol, String]]) -> Result
+  def judge: (String, Array[Hash[Symbol, String]]) -> Result
+
+  private
+
+  # Writes the submission and every case input into the directory shared with the container.
+  # : (String, String, Array[Hash[Symbol, String]]) -> void
+  def prepare: (String, String, Array[Hash[Symbol, String]]) -> void
+
+  # Executes the submission in a throwaway container.
+  # : (String) -> [ String, String, Process::Status ]
+  def run_container: (String) -> [ String, String, Process::Status ]
+
+  # Builds the shell script the container runs: compile once, then one process per case.
+  # : () -> String
+  def container_script: () -> String
+
+  # Reads the container output and returns the verdict of the first case that is not AC.
+  # : (String, Array[Hash[Symbol, String]]) -> Result
+  def collect: (String, Array[Hash[Symbol, String]]) -> Result
+
+  # Maps a non-zero exit status to its verdict.
+  # : (Integer) -> String
+  def runtime_verdict: (Integer) -> String
+
+  # Compares actual output against expected, distinguishing WA from PE.
+  # : (String, String) -> String
+  def compare: (String, String) -> String
+
+  # Strips trailing whitespace from each line and from the end of the output.
+  # : (String) -> String
+  def normalize: (String) -> String
+end
