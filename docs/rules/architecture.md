@@ -63,10 +63,13 @@ Solid Queue is the backend. Recurring tasks go in `config/recurring.yml`.
 
 ## Current
 
-`Current` carries the request context (`session`, `team`, request metadata). Setting
-`session` derives `team` from it, the same way Fizzy derives `identity`/`user`.
-Models may read `Current` for **defaults** (`default: -> { Current.team }`), never for
+`Current` carries the request context (`session`, `user`, request metadata). Setting
+`session` derives `user` from it, the same way Fizzy derives `identity`/`user`.
+Models may read `Current` for **defaults** (`default: -> { Current.user }`), never for
 control flow buried deep in domain logic — pass explicit arguments there.
+
+`Current.user` **is** the competing team when `staff` is false — there is no `Team`
+model and no `Current.team` (ADR-0011).
 
 ## Scale guardrail
 

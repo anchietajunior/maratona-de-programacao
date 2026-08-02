@@ -8,7 +8,7 @@ factories, no mocking library until a test genuinely cannot be written without o
 - `test/fixtures/` holds one small, coherent world: a contest, a few teams, problems
   at each difficulty, submissions covering the interesting verdicts. Every test runs
   against it.
-- Fixtures have story names (`teams(:turing)`, `problems(:easy_sum)`,
+- Fixtures have story names (`users(:turing)`, `problems(:easy_sum)`,
   `submissions(:turing_accepted)`) — never `team1`, `record_a`.
 - When a test needs a state the fixtures don't have, **mutate a fixture in the test**
   (`submissions(:turing_wrong).accept!`) rather than growing the fixture set for one
@@ -33,7 +33,7 @@ class Submission::ScoreableTest < ActiveSupport::TestCase
   end
 
   test "penalty only counts for problems later solved" do
-    assert_difference -> { teams(:turing).total_time }, +10 do
+    assert_difference -> { users(:turing).total_time }, +10 do
       # ...
     end
   end

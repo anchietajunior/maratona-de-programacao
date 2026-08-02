@@ -37,7 +37,7 @@ class SubmissionsController < ApplicationController
   before_action :set_problem, only: %i[ create ]
 
   def create
-    @submission = @problem.submissions.create! submission_params.merge(team: Current.team)
+    @submission = @problem.submissions.create! submission_params.merge(user: Current.user)
 
     respond_to do |format|
       format.turbo_stream
@@ -57,7 +57,7 @@ class SubmissionsController < ApplicationController
 ```
 
 - `before_action` setters are private, named `set_<resource>`, and **scope through
-  the authority** (`Current.team.submissions.find ...`), never `Model.find(params[:id])`.
+  the authority** (`Current.user.submissions.find ...`), never `Model.find(params[:id])`.
   Scoping *is* the authorization for ownership; there is no policy layer.
 - Strong params use `params.expect`.
 - Explicit permission checks are `ensure_*` before_actions that `head :forbidden`.
@@ -78,4 +78,5 @@ Team screens and staff screens never share controllers. Staff controllers are
 namespaced (`Staff::SubmissionsController`, routes under a `staff` scope) with the
 access check in one base controller. What is secret is the *ranking*, not the
 verdict (Art. 34) — a team controller must never be able to render another team's
-data, by construction (scoping through `Current.team`).
+data, by construction (scoping through `Current.user`, which *is* the team — ADR-0011).
+The staff base controller's access check is `Current.user.staff?`.

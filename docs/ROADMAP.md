@@ -16,15 +16,18 @@ vocabulário (`CONTEXT.md`), nem regras de como construir (`docs/rules/`).
 **Fase 1 — Esquema e modelos.** Fundação pronta: domínio documentado, regras de
 engenharia escritas, juiz funcionando e testado contra Docker.
 
-A autenticação foi antecipada da Fase 4: existem `users` (nickname, senha, `staff`) e
-`sessions`, com o concern `Authentication` e o `Current` do `rails generate
-authentication`. Existe também uma página inicial pública (`/`) com link para o
-regulamento e para o login, os tokens do `docs/design.md` no tema do Tailwind e o
-locale `pt-BR`.
+**A Fase 4 foi antecipada e está fechada.** `users` (`nickname`, `name`, senha, `staff`) e
+`sessions` (`last_active_at`), com sessão única por equipe e expiração por inatividade — o
+ADR-0009 inteiro. As duas superfícies existem e o login roteia por audiência: equipe cai
+em `/scoreboard`, staff em `/staff`. Ambas são cascas — o conteúdo chega nas Fases 3, 5 e
+6. Existe também uma página inicial pública (`/`) com link para o regulamento e para o
+login, os tokens do `docs/design.md` no tema do Tailwind e o locale `pt-BR`.
+
+**A Equipe é o `User`** — decidido, ver [ADR-0011](adr/0011-equipe-e-o-user.md). Não haverá
+tabela `teams`: `staff: false` compete, `staff: true` avalia.
 
 **Nenhuma tabela do domínio existe ainda** — `contests`, `problems`, `testcases` e
-`submissions` seguem pendentes. Ver a pergunta 3 em "Bloqueios abertos": `users.staff`
-substitui ou convive com `teams`?
+`submissions` seguem pendentes.
 
 Próxima task: `1.1 — Migrations`.
 
@@ -56,14 +59,17 @@ Próxima task: `1.1 — Migrations`.
 Sem lógica de negócio ainda: tabelas, associações e o mundo de fixtures que todos os
 testes vão usar.
 
-- [ ] **1.1 Migrations** — `contests`, `teams`, `problems`, `testcases`, `submissions`
+- [ ] **1.1 Migrations** — `contests`, `problems`, `testcases`, `submissions`. Não há
+      `teams`: a Equipe é o `User` (ADR-0011), que já existe
+  - ~~`users.name`~~ — feito junto com a Fase 4
   - `testcases.input` e `testcases.expected_output` em colunas **binárias** (ADR-0003)
   - `submissions.code` em `text` com `utf8mb4`
   - `problems.difficulty` como enum (easy/medium/hard); os pontos derivam dela
   - `contests.started_at` / `ended_at` — o relógio é relativo ao início real (ADR-0008)
-- [ ] **1.2 Modelos e associações** — núcleo curto, sem concerns ainda
-- [ ] **1.3 `Current`** — `session` deriva `team`, conforme `docs/rules/architecture.md`
-- [ ] **1.4 Fixtures** — um contest, 3-4 teams com nomes de história, problemas de cada
+- [ ] **1.2 Modelos e associações** — núcleo curto, sem concerns ainda. `User.competing`
+      (`staff: false`) é o escopo por onde toda consulta de competição passa
+- [ ] **1.3 `Current`** — `session` já deriva `user`, conforme `docs/rules/architecture.md`
+- [ ] **1.4 Fixtures** — um contest, 3-4 equipes com nomes de história, problemas de cada
       dificuldade, testcases. É o universo compartilhado (`docs/rules/testing.md`)
 - [ ] **1.5 Seeds** — precisam sobreviver a `db:seed:replant` no ambiente de teste, senão
       `bin/ci` quebra
@@ -103,13 +109,20 @@ problemas é o caminho crítico real do evento, não o software.
 - [x] **4.1 `Authentication` concern** + login por credencial (Art. 21) — `nickname`
       (`equipe01`) em vez de e-mail; `users.staff` é a base da autorização. O fluxo de
       recuperação de senha do gerador foi removido: o app não tem Action Mailer
-- [ ] **4.2 Sessão única por equipe** — login novo é **bloqueado** enquanto houver sessão
-      ativa (ADR-0009)
-- [ ] **4.3 Expiração por inatividade** — obrigatória, senão navegador travado tranca a
-      equipe fora da prova. Carimbar `last_active_at` no tráfego que já existe
-- [ ] **4.4 Login de staff** — superfície separada, namespace `Staff::` inteiro protegido
-      por um único controller base (`docs/rules/controllers.md`)
-- [ ] **4.5 Testes** — segundo login bloqueado; sessão expirada libera novo login
+- [x] **4.2 Sessão única por equipe** — `User#signed_in_elsewhere?` recusa o login enquanto
+      houver Sessão ativa (ADR-0009). **Staff não tem a restrição**: o Art. 21 fala de
+      Equipe, e as comissões usam mais de uma máquina
+- [x] **4.3 Expiração por inatividade** — `Session::INACTIVITY_LIMIT` (10 min, calibrar em
+      10.2) e `last_active_at` carimbado em `resume_session`. Expirar só **desbloqueia
+      novo login**; o cookie anterior continua autenticando, conforme o ADR-0009
+  - Só há tráfego autenticado no logout hoje, então o carimbo só será exercitado de
+    verdade a partir da Fase 5. O teste de integração do carimbo entra com a primeira tela
+    de equipe
+- [x] **4.4 Login de staff** — namespace `Staff::` sob `/staff`, protegido por
+      `Staff::BaseController#ensure_staff`. Login roteia por audiência: staff vai para
+      `/staff`, equipe para `/scoreboard` (`Authentication#home_url_for`)
+- [x] **4.5 Testes** — segundo login bloqueado, sessão inativa libera novo login, staff
+      loga em duas máquinas, cookie expirado ainda autentica
 
 ---
 
@@ -130,12 +143,13 @@ problemas é o caminho crítico real do evento, não o software.
 
 O coração das regras. É onde o evento ganha ou perde credibilidade.
 
-- [ ] **6.1 `Team::Scoreable`** — `score` e `total_time` **derivados** das submissões,
+- [ ] **6.1 `User::Scoreable`** — `score` e `total_time` **derivados** das submissões,
       nunca acumulados em coluna (ADR-0010)
 - [ ] **6.2 Penalidade retroativa** — 10 min por tentativa errada **só** em Problema
       depois resolvido (Art. 31-III)
 - [ ] **6.3 Placar Individual** — a equipe vê resolvidos, tentativas, tempo e pontuação;
-      nada de outra equipe (Art. 34)
+      nada de outra equipe (Art. 34). `ScoreboardsController#show` já existe como casca —
+      é onde a equipe cai depois do login; falta todo o conteúdo
 - [ ] **6.4 Standings (staff)** — classificação com os três critérios de desempate:
       pontuação → tempo → maior dificuldade resolvida por último (Art. 29-33)
 - [ ] **6.5 Testes de borda** — obrigatórios (`docs/rules/testing.md`): tudo-ou-nada,
@@ -193,16 +207,14 @@ Nada aqui é código. É o que costuma explodir por ficar para a véspera.
 
 ## Bloqueios abertos
 
-Duas perguntas para a coordenação (1 e 2). Nenhuma trava as Fases 1-6.
+Duas perguntas para a coordenação. Nenhuma trava as Fases 1-6.
 
 1. **Art. 20** — se a Competição começar 19h20, encerra 22h20 (3h de duração) ou 22h00
    (horário fixo)? Assumido: duração de 3h (ADR-0008). *Bloqueia 7.1.*
 2. **Art. 27** — depois de obter AC num Problema, a equipe ainda pode submeter nele?
    Assumido: não, o Problema fecha. *Bloqueia 7.4.*
-3. **`User` × `Team`** — decisão de arquitetura, não da coordenação. A autenticação
-   criou `users` com `staff`, enquanto `CONTEXT.md` diz que quem compete é a **Equipe**
-   (e evita "usuário"). `Team` vira um registro próprio apontando para o `User`, ou
-   `users.staff = false` *é* a Equipe? *Bloqueia 1.1 e 1.2.*
+Resolvido: **`User` × `Team`** — a Equipe é o `User` com `staff: false`, sem tabela
+`teams` ([ADR-0011](adr/0011-equipe-e-o-user.md)). 1.1 e 1.2 estão liberadas.
 
 ---
 

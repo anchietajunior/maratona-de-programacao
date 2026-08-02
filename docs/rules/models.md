@@ -59,7 +59,7 @@ models and controllers prefer `create!`/`update!` so failures are loud.
 
 ## Defaults and scopes
 
-- Defaults from context via lambdas: `belongs_to :team, default: -> { Current.team }`.
+- Defaults from context via lambdas: `belongs_to :user, default: -> { Current.user }`.
 - Scopes get real names: `chronologically`, `reverse_chronologically`, `accepted`,
   `pending` — not `by_date_asc`.
 - Override `to_param` when the URL should carry a domain identifier (Fizzy uses

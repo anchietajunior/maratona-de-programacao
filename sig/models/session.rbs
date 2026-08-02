@@ -1,17 +1,11 @@
-# rbs_inline: enabled
+# Generated from app/models/session.rb with RBS::Inline
 
 class Session < ApplicationRecord
   # Calibrar antes do evento (ROADMAP 10.2): curto demais desloga durante a prova, longo
   # demais mantém a Equipe trancada fora dela.
-  INACTIVITY_LIMIT = 10.minutes
-
-  belongs_to :user
-
-  scope :active, -> { where(last_active_at: INACTIVITY_LIMIT.ago..) }
+  INACTIVITY_LIMIT: untyped
 
   # Carimba o instante da última atividade no tráfego que já existe (ADR-0009).
-  #: () -> void
-  def touch_activity
-    update_column :last_active_at, Time.current
-  end
+  # : () -> void
+  def touch_activity: () -> void
 end

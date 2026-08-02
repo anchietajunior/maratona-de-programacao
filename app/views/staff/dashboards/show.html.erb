@@ -1,0 +1,16 @@
+<% content_for :title, t(".title") %>
+
+<%= render "layouts/signed_in_bar" %>
+
+<h1 class="text-display-md"><%= t(".title") %></h1>
+
+<section class="mt-lg rounded-lg border border-hairline bg-surface-card p-lg">
+  <h2 class="text-title-md"><%= t(".teams", count: @teams.count) %></h2>
+  <ul class="mt-sm text-body-sm text-body">
+    <% @teams.each do |team| %>
+      <li><%= team.name %> — <span class="font-mono"><%= team.nickname %></span></li>
+    <% end %>
+  </ul>
+</section>
+
+<p class="mt-lg max-w-prose text-body-sm text-muted"><%= t(".pending") %></p>

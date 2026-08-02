@@ -14,4 +14,25 @@ class UserTest < ActiveSupport::TestCase
     assert_not users(:turing).staff?
     assert users(:technical_committee).staff?
   end
+
+  test "a team with an active session is signed in elsewhere" do
+    turing = users(:turing)
+    turing.sessions.create!
+
+    assert turing.signed_in_elsewhere?
+  end
+
+  test "a team whose session went inactive is not signed in elsewhere" do
+    turing = users(:turing)
+    turing.sessions.create!.update_column :last_active_at, Session::INACTIVITY_LIMIT.ago - 1.second
+
+    assert_not turing.signed_in_elsewhere?
+  end
+
+  test "staff is never signed in elsewhere, however many sessions it has" do
+    committee = users(:technical_committee)
+    committee.sessions.create!
+
+    assert_not committee.signed_in_elsewhere?
+  end
 end

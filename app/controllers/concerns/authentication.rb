@@ -22,7 +22,7 @@ module Authentication
     end
 
     def resume_session
-      Current.session ||= find_session_by_cookie
+      Current.session ||= find_session_by_cookie&.tap(&:touch_activity)
     end
 
     def find_session_by_cookie
@@ -35,7 +35,15 @@ module Authentication
     end
 
     def after_authentication_url
-      session.delete(:return_to_after_authenticating) || root_url
+      session.delete(:return_to_after_authenticating) || home_url_for(Current.user)
+    end
+
+    def home_url_for(user)
+      if user.staff?
+        staff_root_url
+      else
+        scoreboard_url
+      end
     end
 
     def start_new_session_for(user)

@@ -26,6 +26,22 @@ pt-BR:
       password: "Senha"
       submit: "Entrar"
       back: "Voltar à página inicial"
+    destroy:
+      submit: "Sair"
     create:
       failed: "Identificação ou senha inválida."
+      signed_in_elsewhere: "Esta equipe já está conectada em outro computador. Cada equipe usa uma máquina só (Art. 21). Se o computador anterior travou, espere alguns minutos ou chame a Comissão Organizadora."
       rate_limited: "Tentativas demais. Espere alguns minutos e tente de novo."
+  scoreboards:
+    show:
+      title: "Placar Individual"
+      waiting: "A competição ainda não começou. Quando a Comissão Organizadora iniciar, os problemas aparecem aqui e você poderá submeter."
+  staff:
+    dashboards:
+      show:
+        title: "Comissão"
+        teams:
+          zero: "Nenhuma equipe cadastrada"
+          one: "1 equipe cadastrada"
+          other: "%{count} equipes cadastradas"
+        pending: "O cadastro de Problemas e Casos de Teste ainda não existe no sistema."

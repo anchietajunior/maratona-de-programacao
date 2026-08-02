@@ -54,7 +54,8 @@ Conventions). Use this mapping consistently — do not invent alternatives:
 
 | CONTEXT.md (pt-BR) | Code (en) |
 |---|---|
-| Equipe | `Team` |
+| Equipe | `User` com `staff: false` — não existe `Team` (ADR-0011) |
+| Comissão Técnica / Organizadora | `User` com `staff: true` |
 | Competição | `Contest` |
 | Problema | `Problem` |
 | Enunciado | `statement` |
@@ -169,6 +170,12 @@ bundle exec rbs -I sig validate                   # check they are well-formed
 Generate from `lib/` and `app/` only, not `test/`. Test annotations are still written (they
 document the helpers), but `rbs validate` cannot resolve `ActiveSupport::TestCase` without
 pulling in RBS for all of Rails via `rbs collection` — not worth the weight here.
+
+The same limit applies to anything inheriting from a Rails class: `validate` reports
+`Could not find super class: ApplicationRecord` for every annotated model. **This is
+expected — do not delete the annotations to silence it, and do not add `rbs collection`.**
+`bin/ci` does not run `validate`; the step exists to catch malformed signatures in `lib/`,
+which is the only Rails-independent code here.
 
 RuboCop's `Layout/LeadingCommentSpace` would rewrite `#:` into `# :` and silently break
 every annotation. `.rubocop.yml` sets `AllowRBSInlineAnnotation: true` to prevent this —

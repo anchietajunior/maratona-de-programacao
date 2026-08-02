@@ -2,13 +2,16 @@
 
 turing:
   nickname: equipe01
+  name: Turing
   password_digest: <%= password_digest %>
 
 hopper:
   nickname: equipe02
+  name: Hopper
   password_digest: <%= password_digest %>
 
 technical_committee:
   nickname: comissao
+  name: Comissão Técnica
   password_digest: <%= password_digest %>
   staff: true

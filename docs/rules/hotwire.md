@@ -28,7 +28,7 @@ end
 
 ```erb
 <%# the team's scoreboard page %>
-<%= turbo_stream_from Current.team %>
+<%= turbo_stream_from Current.user %>
 ```
 
 The layout sets morphing globally, once (Fizzy does exactly this):
@@ -83,7 +83,7 @@ controller never fetches data the server could have pushed.
 
 ## The secrecy guardrail (Art. 34)
 
-A team's page subscribes only to streams derived from `Current.team` and to shared
+A team's page subscribes only to streams derived from `Current.user` and to shared
 all-teams streams (`:announcements`) that never carry ranking data. Never broadcast
 standings, another team's verdicts, or aggregate counts onto any stream a team page
 subscribes to — the leak happens at broadcast time, not render time.
