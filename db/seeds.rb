@@ -7,3 +7,9 @@ User.find_or_create_by!(nickname: "staff01") do |user|
   user.password = "12345"
   user.staff = true
 end
+
+User.find_or_create_by!(nickname: "equipe01") do |user|
+  user.name = "Equipe 01"
+  user.password = "12345"
+  user.staff = false
+end
