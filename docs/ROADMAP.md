@@ -13,7 +13,7 @@ vocabulário (`CONTEXT.md`), nem regras de como construir (`docs/rules/`).
 
 ## Onde estamos
 
-**Fase 1 — Esquema e modelos.** Fundação pronta: domínio documentado, regras de
+**Fase 2 — Julgamento ponta a ponta.** Fundação pronta: domínio documentado, regras de
 engenharia escritas, juiz funcionando e testado contra Docker.
 
 **A Fase 4 foi antecipada e está fechada.** `users` (`nickname`, `name`, senha, `staff`) e
@@ -39,7 +39,12 @@ verdade — cinco Casos de Teste e cinco Submissões que já contam a história 
 que a Fase 6 vai ter de reproduzir: penalidade que vale, penalidade que não vale, e uma
 submissão ainda não julgada.
 
-Próxima task: `1.5 — Seeds`.
+**A Fase 1 está fechada.** Os seeds criam as duas comissões, as 15 equipes (`equipe01` a
+`equipe15`) e a Competição ainda não iniciada — o mundo mínimo para abrir o app. Problemas
+e Casos de Teste ficam de fora de propósito: pelo ADR-0003 a saída esperada é gerada
+rodando a Solução de Referência, e é a tela da Fase 3 que faz isso.
+
+Próxima task: `2.1 — Submission::Judgeable`.
 
 ---
 
@@ -101,8 +106,13 @@ testes vão usar.
     minutos inteiros e não pode depender da ordem em que o Rails carrega os fixtures
   - `turing` tem WA e depois AC no mesmo Problema (penalidade vale), `lovelace` tem WA em
     Problema nunca resolvido (não vale) — o par que a 6.2 precisa
-- [ ] **1.5 Seeds** — precisam sobreviver a `db:seed:replant` no ambiente de teste, senão
-      `bin/ci` quebra
+- [x] **1.5 Seeds** — as duas comissões, as 15 equipes do Art. 21 e a Competição ainda não
+      iniciada. Idempotentes: sobrevivem ao `db:seed:replant` no ambiente de teste, que é o
+      passo do `bin/ci`
+  - A senha sai de `SEED_PASSWORD`, com `12345` de padrão — na véspera do evento as
+    credenciais reais entram por aí, sem editar o arquivo
+  - Sem Problemas nem Casos de Teste: pelo ADR-0003 a saída esperada é **gerada** rodando a
+    Solução de Referência, o que exige Docker. Quem cadastra é a tela da Fase 3
 
 ---
 
