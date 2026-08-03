@@ -13,7 +13,7 @@ vocabulário (`CONTEXT.md`), nem regras de como construir (`docs/rules/`).
 
 ## Onde estamos
 
-**Fase 2 — Julgamento ponta a ponta.** Fundação pronta: domínio documentado, regras de
+**Fase 3 — Cadastro de Problemas.** Fundação pronta: domínio documentado, regras de
 engenharia escritas, juiz funcionando e testado contra Docker.
 
 **A Fase 4 foi antecipada e está fechada.** `users` (`nickname`, `name`, senha, `staff`) e
@@ -44,7 +44,17 @@ submissão ainda não julgada.
 e Casos de Teste ficam de fora de propósito: pelo ADR-0003 a saída esperada é gerada
 rodando a Solução de Referência, e é a tela da Fase 3 que faz isso.
 
-Próxima task: `2.1 — Submission::Judgeable`.
+**A Fase 2 está fechada.** Uma Submissão nasce pendente, se enfileira sozinha
+(`after_create_commit`) e o worker do Solid Queue grava o veredicto — conferido em
+desenvolvimento com contêiner de verdade. Aqui apareceu o primeiro bug que só quebraria na
+noite do evento: a saída esperada volta do MySQL como `ASCII-8BIT` e o Ruby a considera
+diferente de uma string UTF-8 com os mesmos bytes, o que daria WA em todo Problema com
+acento na saída. O Juiz agora compara bytes.
+
+Falta o caminho humano: ninguém consegue **cadastrar** um Problema nem **submeter** código
+por tela. É o que as Fases 3 e 5 abrem.
+
+Próxima task: `3.1 — Staff::ProblemsController`.
 
 ---
 
@@ -120,11 +130,25 @@ testes vão usar.
 
 Conecta o `Judge` (que já funciona) ao ciclo de vida de uma `Submission`.
 
-- [ ] **2.1 `Submission::Judgeable`** — `judge_later` (after_create_commit) e `judge_now`,
+- [x] **2.1 `Submission::Judgeable`** — `judge_later` (after_create_commit) e `judge_now`,
       que roda o `Judge` e grava o veredicto
-- [ ] **2.2 `Submission::JudgeJob`** — job raso, só delega para `judge_now`
-- [ ] **2.3 Solid Queue rodando** — worker processando de verdade em desenvolvimento
-- [ ] **2.4 Testes** — submissão → veredicto gravado, para cada um dos sete veredictos
+  - Os Casos de Teste chegam ao Juiz por `Problem#judging_cases`, no modelo que os possui.
+    A 3.4 reusa o mesmo método para validar a Solução de Referência
+  - **A comparação do Juiz passou a ser por bytes** (`actual.b == expected.b`). A saída
+    esperada vem de coluna binária e o MySQL a devolve como `ASCII-8BIT`; em Ruby, uma
+    string binária e uma UTF-8 com os mesmos bytes **não são iguais**. Sem isso, todo
+    Problema com acento na saída daria WA — é o raciocínio do ADR-0003 aplicado ao Ruby
+- [x] **2.2 `Submission::JudgeJob`** — job raso, só delega para `judge_now`
+- [x] **2.3 Solid Queue rodando** — desenvolvimento ganhou o banco `queue` separado, como
+      produção já tinha, e `jobs: bin/jobs` entrou no `Procfile.dev`. Conferido ponta a
+      ponta: a submissão nasce pendente e o worker grava `AC` sozinho
+- [x] **2.4 Testes** — a Submissão entra na fila sozinha, o job grava o veredicto, e a
+      saída acentuada vinda da coluna binária é julgada pelos bytes
+  - A matriz dos sete veredictos **continua no `test/judge_test.rb`**, onde já está.
+    Repeti-la pela `Submission` custaria ~40s de contêiner (o TLE espera o limite inteiro,
+    o MLE aloca 256MB) sem exercitar nada que a ponte acrescente
+  - `ActiveJob::TestHelper` não vem incluído no `ActiveSupport::TestCase` deste app; quem
+    precisa de `assert_enqueued_with` inclui na própria classe de teste
 
 ---
 
