@@ -1,0 +1,13 @@
+# Generated from app/models/problem.rb with RBS::Inline
+
+class Problem < ApplicationRecord
+  # Nível de Dificuldade e o que cada um vale (Art. 19).
+  POINTS: untyped
+
+  # A posição é a identidade do Problema na Competição, não o id.
+  # : () -> String?
+  def to_param: () -> String?
+
+  # : () -> Integer
+  def points: () -> Integer
+end

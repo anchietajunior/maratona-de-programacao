@@ -26,12 +26,17 @@ login, os tokens do `docs/design.md` no tema do Tailwind e o locale `pt-BR`.
 **A Equipe é o `User`** — decidido, ver [ADR-0011](adr/0011-equipe-e-o-user.md). Não haverá
 tabela `teams`: `staff: false` compete, `staff: true` avalia.
 
-**O esquema do domínio existe.** `contests`, `problems`, `testcases` e `submissions`
-criadas e migradas; `testcases.input` e `expected_output` são `blob` sem collation,
-conferido no banco. São tabelas nuas — nenhum modelo, associação ou validação sobre elas
-ainda.
+**O esquema do domínio existe e tem modelos.** `contests`, `problems`, `testcases` e
+`submissions` criadas e migradas; `testcases.input` e `expected_output` são `blob` sem
+collation, conferido no banco. Os quatro modelos existem com associações, escopos e
+validações: `Problem` tem o enum de dificuldade e `points` (10/20/30), `to_param` sai da
+`position`, e `Submission` conhece os sete veredictos, com `verdict` nulo significando
+"ainda não julgada". `Current` já estava pronto desde a Fase 4.
 
-Próxima task: `1.2 — Modelos e associações`.
+Falta o mundo de fixtures — nenhum modelo novo tem teste ainda, porque é a 1.4 que cria o
+universo compartilhado em que eles seriam exercitados.
+
+Próxima task: `1.4 — Fixtures`.
 
 ---
 
@@ -74,9 +79,17 @@ testes vão usar.
   - `problems.reference_solution` e `testcases.expected_output` nascem `null: false`: pelo
     ADR-0003 a saída é gerada pela referência **antes** de o Testcase existir
   - `submissions.verdict` nulo significa "ainda não julgado" (Fase 2)
-- [ ] **1.2 Modelos e associações** — núcleo curto, sem concerns ainda. `User.competing`
+- [x] **1.2 Modelos e associações** — núcleo curto, sem concerns ainda. `User.competing`
       (`staff: false`) é o escopo por onde toda consulta de competição passa
-- [ ] **1.3 `Current`** — `session` já deriva `user`, conforme `docs/rules/architecture.md`
+  - `Problem::POINTS` é a fonte única do enum `difficulty` e de `points` — 4 fáceis, 4
+    médios e 2 difíceis fecham os 180 pontos do Art. 19
+  - `Testcase` fica sem validação de presença de propósito: entrada e saída vazias são
+    legítimas (problema que não lê nada, problema que não imprime nada); só nulo é
+    inválido, e o `null: false` já recusa
+  - `Submission#accepted?` e o escopo `accepted` são o que a Fase 6 vai somar; `verdict`
+    tem inclusão nos sete veredictos, com nulo permitido
+- [x] **1.3 `Current`** — `session` já deriva `user`, conforme `docs/rules/architecture.md`.
+      Veio junto com a Fase 4
 - [ ] **1.4 Fixtures** — um contest, 3-4 equipes com nomes de história, problemas de cada
       dificuldade, testcases. É o universo compartilhado (`docs/rules/testing.md`)
 - [ ] **1.5 Seeds** — precisam sobreviver a `db:seed:replant` no ambiente de teste, senão

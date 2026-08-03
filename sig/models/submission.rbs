@@ -1,0 +1,13 @@
+# Generated from app/models/submission.rb with RBS::Inline
+
+class Submission < ApplicationRecord
+  VERDICTS: untyped
+
+  # Veredicto nulo é Submissão ainda não julgada.
+  # : () -> bool
+  def judged?: () -> bool
+
+  # Único Veredicto que pontua (Art. 30).
+  # : () -> bool
+  def accepted?: () -> bool
+end

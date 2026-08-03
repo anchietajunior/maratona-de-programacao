@@ -3,6 +3,7 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
+  has_many :submissions, dependent: :destroy
 
   normalizes :nickname, with: ->(nickname) { nickname.strip.downcase }
 
