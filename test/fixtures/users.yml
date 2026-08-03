@@ -10,6 +10,16 @@ hopper:
   name: Hopper
   password_digest: <%= password_digest %>
 
+lovelace:
+  nickname: equipe03
+  name: Lovelace
+  password_digest: <%= password_digest %>
+
+dijkstra:
+  nickname: equipe04
+  name: Dijkstra
+  password_digest: <%= password_digest %>
+
 technical_committee:
   nickname: comissao
   name: Comissão Técnica

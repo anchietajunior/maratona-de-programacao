@@ -1,0 +1,36 @@
+# A saída esperada é exatamente o que a Solução de Referência imprime, com a quebra de
+# linha final — o Juiz compara byte a byte (ADR-0003).
+sum_positives:
+  problem: easy_sum
+  input: |
+    3 4
+  expected_output: |
+    7
+
+sum_negative:
+  problem: easy_sum
+  input: |
+    10 -2
+  expected_output: |
+    8
+
+primes_up_to_ten:
+  problem: medium_primes
+  input: |
+    10
+  expected_output: |
+    4
+
+primes_up_to_one:
+  problem: medium_primes
+  input: |
+    1
+  expected_output: |
+    0
+
+fibonacci_tenth:
+  problem: hard_fibonacci
+  input: |
+    10
+  expected_output: |
+    55

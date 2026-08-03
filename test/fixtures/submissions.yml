@@ -1,0 +1,55 @@
+# Os instantes caem no meio do minuto de propósito: o Tempo Acumulado é contado em minutos
+# inteiros e não pode depender de qual arquivo de fixture o Rails carregou primeiro.
+#
+# Contra a Competição que começou há 40 minutos, o mundo é este:
+#   turing   — errou aos 7min30, acertou o fácil aos 12min30 (a penalidade vale)
+#   hopper   — acertou o médio aos 25min30, de primeira
+#   lovelace — errou o difícil aos 20min30 e nunca resolveu (a penalidade não vale)
+#   dijkstra — submeteu aos 37min30 e ainda não foi julgado
+
+turing_wrong:
+  user: turing
+  problem: easy_sum
+  verdict: WA
+  created_at: <%= 32.5.minutes.ago %>
+  code: |
+    a, b = map(int, input().split())
+    print(a - b)
+
+turing_accepted:
+  user: turing
+  problem: easy_sum
+  verdict: AC
+  created_at: <%= 27.5.minutes.ago %>
+  code: |
+    a, b = map(int, input().split())
+    print(a + b)
+
+hopper_accepted:
+  user: hopper
+  problem: medium_primes
+  verdict: AC
+  created_at: <%= 14.5.minutes.ago %>
+  code: |
+    n = int(input())
+    print(sum(1 for x in range(2, n + 1) if all(x % d for d in range(2, int(x ** 0.5) + 1))))
+
+lovelace_wrong:
+  user: lovelace
+  problem: hard_fibonacci
+  verdict: WA
+  created_at: <%= 19.5.minutes.ago %>
+  code: |
+    n = int(input())
+    a, b = 0, 1
+    for _ in range(n - 1):
+        a, b = b, a + b
+    print(a)
+
+dijkstra_pending:
+  user: dijkstra
+  problem: easy_sum
+  created_at: <%= 2.5.minutes.ago %>
+  code: |
+    a, b = map(int, input().split())
+    print(a + b)

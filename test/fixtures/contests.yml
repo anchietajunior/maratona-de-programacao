@@ -1,0 +1,3 @@
+# A Competição está em andamento: começou há 40 minutos e ainda não foi encerrada.
+maratona:
+  started_at: <%= 40.minutes.ago %>

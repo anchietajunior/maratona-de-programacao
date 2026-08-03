@@ -1,0 +1,59 @@
+easy_sum:
+  contest: maratona
+  position: 1
+  title: Soma de dois números
+  difficulty: easy
+  statement: |
+    Dados dois números inteiros, imprima a soma dos dois.
+
+    ## Entrada
+
+    Uma única linha com dois inteiros `A` e `B`, separados por um espaço.
+
+    ## Saída
+
+    Uma única linha com o valor de `A + B`.
+  reference_solution: |
+    a, b = map(int, input().split())
+    print(a + b)
+
+medium_primes:
+  contest: maratona
+  position: 2
+  title: Contagem de primos
+  difficulty: medium
+  statement: |
+    Conte quantos números primos existem entre 2 e `N`, inclusive.
+
+    ## Entrada
+
+    Uma única linha com o inteiro `N`.
+
+    ## Saída
+
+    Uma única linha com a quantidade de primos encontrados.
+  reference_solution: |
+    n = int(input())
+    print(sum(1 for x in range(2, n + 1) if all(x % d for d in range(2, int(x ** 0.5) + 1))))
+
+hard_fibonacci:
+  contest: maratona
+  position: 3
+  title: Fibonacci de índice grande
+  difficulty: hard
+  statement: |
+    Imprima o `N`-ésimo termo da sequência de Fibonacci, em que `F(0) = 0` e `F(1) = 1`.
+
+    ## Entrada
+
+    Uma única linha com o inteiro `N`.
+
+    ## Saída
+
+    Uma única linha com `F(N)`.
+  reference_solution: |
+    n = int(input())
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    print(a)

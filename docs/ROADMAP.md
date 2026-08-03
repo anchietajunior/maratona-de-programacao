@@ -33,10 +33,13 @@ validações: `Problem` tem o enum de dificuldade e `points` (10/20/30), `to_par
 `position`, e `Submission` conhece os sete veredictos, com `verdict` nulo significando
 "ainda não julgada". `Current` já estava pronto desde a Fase 4.
 
-Falta o mundo de fixtures — nenhum modelo novo tem teste ainda, porque é a 1.4 que cria o
-universo compartilhado em que eles seriam exercitados.
+**O universo de fixtures existe.** Uma Competição em andamento (começou há 40 minutos),
+quatro equipes, três Problemas — um de cada dificuldade, com Solução de Referência de
+verdade — cinco Casos de Teste e cinco Submissões que já contam a história de pontuação
+que a Fase 6 vai ter de reproduzir: penalidade que vale, penalidade que não vale, e uma
+submissão ainda não julgada.
 
-Próxima task: `1.4 — Fixtures`.
+Próxima task: `1.5 — Seeds`.
 
 ---
 
@@ -90,8 +93,14 @@ testes vão usar.
     tem inclusão nos sete veredictos, com nulo permitido
 - [x] **1.3 `Current`** — `session` já deriva `user`, conforme `docs/rules/architecture.md`.
       Veio junto com a Fase 4
-- [ ] **1.4 Fixtures** — um contest, 3-4 equipes com nomes de história, problemas de cada
+- [x] **1.4 Fixtures** — um contest, 3-4 equipes com nomes de história, problemas de cada
       dificuldade, testcases. É o universo compartilhado (`docs/rules/testing.md`)
+  - As Soluções de Referência são código Python que roda de verdade, e as saídas esperadas
+    foram conferidas executando cada uma contra as suas entradas
+  - Os instantes das Submissões caem no meio do minuto: o Tempo Acumulado é contado em
+    minutos inteiros e não pode depender da ordem em que o Rails carrega os fixtures
+  - `turing` tem WA e depois AC no mesmo Problema (penalidade vale), `lovelace` tem WA em
+    Problema nunca resolvido (não vale) — o par que a 6.2 precisa
 - [ ] **1.5 Seeds** — precisam sobreviver a `db:seed:replant` no ambiente de teste, senão
       `bin/ci` quebra
 
