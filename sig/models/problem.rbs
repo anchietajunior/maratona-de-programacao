@@ -10,4 +10,8 @@ class Problem < ApplicationRecord
 
   # : () -> Integer
   def points: () -> Integer
+
+  # Os Casos de Teste no formato que o Juiz consome.
+  # : () -> Array[Hash[Symbol, String]]
+  def judging_cases: () -> Array[Hash[Symbol, String]]
 end

@@ -1,6 +1,8 @@
 # Generated from app/models/submission.rb with RBS::Inline
 
 class Submission < ApplicationRecord
+  include Judgeable
+
   VERDICTS: untyped
 
   # Veredicto nulo é Submissão ainda não julgada.

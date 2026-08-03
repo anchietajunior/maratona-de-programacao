@@ -21,4 +21,10 @@ class Problem < ApplicationRecord
 
   #: () -> Integer
   def points = POINTS.fetch(difficulty.to_sym)
+
+  # Os Casos de Teste no formato que o Juiz consome.
+  #: () -> Array[Hash[Symbol, String]]
+  def judging_cases
+    testcases.map { |testcase| { input: testcase.input, expected: testcase.expected_output } }
+  end
 end

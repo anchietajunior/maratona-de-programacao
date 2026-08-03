@@ -1,0 +1,6 @@
+# Generated from app/jobs/submission/judge_job.rb with RBS::Inline
+
+class Submission::JudgeJob < ApplicationJob
+  # : (Submission) -> void
+  def perform: (Submission) -> void
+end

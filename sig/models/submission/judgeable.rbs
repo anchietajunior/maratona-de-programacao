@@ -1,0 +1,12 @@
+# Generated from app/models/submission/judgeable.rb with RBS::Inline
+
+# Liga a Submissão ao Juiz: toda Submissão nasce pendente e é julgada em segundo plano.
+module Submission::Judgeable
+  extend ActiveSupport::Concern
+
+  # : () -> void
+  def judge_later: () -> void
+
+  # : () -> void
+  def judge_now: () -> void
+end

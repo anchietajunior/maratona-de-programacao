@@ -1,6 +1,8 @@
 # rbs_inline: enabled
 
 class Submission < ApplicationRecord
+  include Judgeable
+
   VERDICTS = %w[ AC WA PE TLE MLE RE CE ].freeze
 
   belongs_to :user, default: -> { Current.user }
