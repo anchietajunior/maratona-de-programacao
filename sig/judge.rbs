@@ -65,7 +65,10 @@ class Judge
   # : (Integer) -> String
   def runtime_verdict: (Integer) -> String
 
-  # Compares actual output against expected, distinguishing WA from PE.
+  # Compares actual output against expected byte by byte, distinguishing WA from PE.
+  # Comparison is on bytes because the expected output arrives from a binary column and
+  # Ruby answers that a BINARY string and a UTF-8 string with the same bytes differ.
+  # The reasoning of ADR-0003 applied to Ruby: nothing but the bytes decides equality.
   # : (String, String) -> String
   def compare: (String, String) -> String
 

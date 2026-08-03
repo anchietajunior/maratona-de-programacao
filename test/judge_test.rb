@@ -33,6 +33,13 @@ class JudgeTest < ActiveSupport::TestCase
     assert_equal "WA", compare("Sim\n", "SIM\n")
   end
 
+  test "expected output out of a binary column is compared by its bytes" do
+    # Ruby disagrees too: a BINARY string and a UTF-8 string with the same bytes are
+    # different. Without this, every accented output would be WA.
+    assert_equal "AC", compare("não\n", "não\n".dup.force_encoding(Encoding::BINARY))
+    assert_equal "PE", compare("não \n", "não\n".dup.force_encoding(Encoding::BINARY))
+  end
+
   test "wrong answer is WA" do
     assert_equal "WA", compare("NAO\n", "SIM\n")
   end

@@ -143,10 +143,13 @@ class Judge
     end
   end
 
-  # Compares actual output against expected, distinguishing WA from PE.
+  # Compares actual output against expected byte by byte, distinguishing WA from PE.
+  # Comparison is on bytes because the expected output arrives from a binary column and
+  # Ruby answers that a BINARY string and a UTF-8 string with the same bytes differ.
+  # The reasoning of ADR-0003 applied to Ruby: nothing but the bytes decides equality.
   #: (String, String) -> String
   def compare(actual, expected)
-    return "AC" if actual == expected
+    return "AC" if actual.b == expected.b
     return "PE" if normalize(actual) == normalize(expected)
 
     "WA"
@@ -155,6 +158,6 @@ class Judge
   # Strips trailing whitespace from each line and from the end of the output.
   #: (String) -> String
   def normalize(text)
-    text.lines.map(&:rstrip).join("\n").rstrip
+    text.b.lines.map(&:rstrip).join("\n").rstrip
   end
 end
