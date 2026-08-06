@@ -69,8 +69,8 @@ _Avoid_: Gabarito, solução oficial
 
 **Submeter**:
 Enviar uma solução em Python 3 para julgamento. Pode ser feito quantas vezes a Equipe
-quiser durante a Competição, até obter AC — Problema aceito fica fechado para aquela
-Equipe. (Art. 22, 27)
+quiser durante a Competição, inclusive depois de obter AC — o Problema resolvido **não**
+fecha. Fora da janela de três horas não se submete. (Art. 22, 27)
 _Avoid_: Entregar, enviar, subir
 
 **Submissão**:

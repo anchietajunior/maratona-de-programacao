@@ -19,8 +19,8 @@ da Competição e, para cada Submissão, o seu instante; tudo que a Classificaç
 diferença entre os dois. Isso também torna a Competição testável sem esperar três horas
 nem mexer no relógio da máquina.
 
-**A coordenação precisa saber disso.** É uma leitura do regulamento, não uma regra
-explícita nele: o Art. 20 dá horários fixos e nós estamos tratando-os como a expectativa
-de agenda, com a duração de 3 horas como a regra dura. Se a intenção da coordenação for
-encerrar às 22h00 independentemente de quando comece, a duração passa a ser variável e
-isso muda a decisão.
+**A coordenação confirmou esta leitura.** Ela nasceu como interpretação — o Art. 20 dá
+horários fixos e nós os tratamos como expectativa de agenda — e foi levada à coordenação
+justamente por não ser explícita no regulamento. A resposta foi 3 horas contadas do início
+real, nada de horário fixo. A duração é constante; o relógio de parede não entra em
+nenhuma conta.

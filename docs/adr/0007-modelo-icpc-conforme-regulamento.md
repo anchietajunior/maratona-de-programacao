@@ -7,7 +7,8 @@ várias conflitaram (ver [ADR-0002](./0002-entrega-unica-e-cega.md), revogado po
 O modelo que ele descreve é o ICPC padrão, artigo por artigo:
 
 - **Equipe** é a unidade que compete, com um computador e uma credencial (Art. 21)
-- **Submissões ilimitadas** durante as 3 horas (Art. 20, 27)
+- **Submissões ilimitadas** durante as 3 horas, inclusive depois do AC — o Problema
+  resolvido não fecha (Art. 20, 27; confirmado pela coordenação)
 - **Sete veredictos**: AC, WA, TLE, MLE, RE, CE, PE (Art. 26)
 - **Tudo ou nada**: só AC pontua, sem parcial (Art. 30)
 - **Pontos por dificuldade**: 10/20/30, total de 180 (Art. 19)
