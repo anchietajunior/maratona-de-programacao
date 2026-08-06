@@ -1,0 +1,25 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "b9c1fe2258df95bc8df0269363f6496b0166eb737e81e11685c667c18d5628d3",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "lib/judge.rb",
+      "line": 119,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "Open3.capture3(\"docker\", \"run\", \"--rm\", \"--network=none\", \"--memory=#{memory}\", \"--memory-swap=#{memory}\", \"--cpus=1\", \"--pids-limit=64\", \"--read-only\", \"--tmpfs\", \"/tmp\", \"--user\", \"65534:65534\", \"--security-opt=no-new-privileges\", \"-e\", \"PYTHONDONTWRITEBYTECODE=1\", \"-e\", \"TIME_LIMIT=#{time_limit}\", \"-e\", \"CE_EXIT=100\", \"-v\", \"#{dir}/code:/code:ro\", \"-v\", \"#{dir}/out:/out\", image, \"sh\", \"-c\", Judge::SCRIPT)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Judge",
+        "method": "run_container"
+      },
+      "user_input": "dir",
+      "confidence": "Medium",
+      "note": "Falso positivo. Nenhum shell recebe interpolação: capture3 é chamado na forma argv, cada argumento é um item do array e vai direto ao execve, sem /bin/sh no meio. O único shell da linha é o do contêiner (sh -c), e ele recebe Judge::SCRIPT, um literal congelado — os limites atravessam como variáveis de ambiente justamente para que nada daqui seja emendado em código shell. As interpolações restantes são argumentos: dir vem de Dir.mktmpdir, memory e time_limit vêm de constantes. Revisado em 2026-08-05; ao mexer em run_container, refaça a análise em vez de regerar a impressão digital."
+    }
+  ],
+  "brakeman_version": "8.0.5"
+}

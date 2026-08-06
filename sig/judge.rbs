@@ -18,6 +18,14 @@ class Judge
 
   OOM_EXIT: ::Integer
 
+  # Raised when code meant to produce expected output does not finish cleanly.
+  class Failed < StandardError
+    attr_reader verdict: String
+
+    # : (String, ?String?) -> void
+    def initialize: (String, ?String?) -> void
+  end
+
   # The outcome of judging one submission.
   class Result
     attr_reader verdict: String
@@ -43,9 +51,16 @@ class Judge
   # : (String, Array[Hash[Symbol, String]]) -> Result
   def judge: (String, Array[Hash[Symbol, String]]) -> Result
 
+  # Runs code against one input and returns exactly the bytes it printed. This is how a
+  # test case gets its expected output — it is generated, never typed (ADR-0003).
+  # : (String, String) -> String
+  def run: (String, String) -> String
+
   private
 
   # Writes the submission and every case input into the directory shared with the container.
+  # Written as bytes: a case input arrives from a binary column, and transcoding it would
+  # raise on the first accent — the reasoning of ADR-0003 applied to the filesystem.
   # : (String, String, Array[Hash[Symbol, String]]) -> void
   def prepare: (String, String, Array[Hash[Symbol, String]]) -> void
 
@@ -75,4 +90,9 @@ class Judge
   # Strips trailing whitespace from each line and from the end of the output.
   # : (String) -> String
   def normalize: (String) -> String
+
+  # Reads the single case's output, refusing anything that did not exit cleanly. Read as
+  # bytes: what is stored must be what the program printed, down to the byte (ADR-0003).
+  # : (String) -> String
+  def output: (String) -> String
 end

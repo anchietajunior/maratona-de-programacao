@@ -18,6 +18,33 @@ class Judge
   TLE_EXIT = 124
   OOM_EXIT = 137
 
+  # What the container runs: compile once, then one process per case. A frozen literal on
+  # purpose — the limits cross into the container as environment variables, so nothing this
+  # process holds is ever spliced into a shell.
+  SCRIPT = <<~SH.freeze
+    python -c 'import sys; compile(open(sys.argv[1]).read(), sys.argv[1], "exec")' \
+      /code/solution.py 2>/out/ce.txt || exit "$CE_EXIT"
+    for input in /code/cases/*.in; do
+      n=$(basename "$input" .in)
+      timeout "$TIME_LIMIT" python /code/solution.py < "$input" \
+        > "/out/$n.out" 2> "/out/$n.err"
+      status=$?
+      echo "$status" > "/out/$n.code"
+      [ "$status" -eq 0 ] || exit 0
+    done
+  SH
+
+  # Raised when code meant to produce expected output does not finish cleanly.
+  class Failed < StandardError
+    attr_reader :verdict #: String
+
+    #: (String, ?String?) -> void
+    def initialize(verdict, message = nil)
+      @verdict = verdict
+      super(message.nil? || message.strip.empty? ? verdict : message)
+    end
+  end
+
   # The outcome of judging one submission.
   class Result
     attr_reader :verdict     #: String
@@ -57,15 +84,28 @@ class Judge
     end
   end
 
+  # Runs code against one input and returns exactly the bytes it printed. This is how a
+  # test case gets its expected output — it is generated, never typed (ADR-0003).
+  #: (String, String) -> String
+  def run(code, input)
+    Dir.mktmpdir("judge") do |dir|
+      prepare(dir, code, [ { input: input } ])
+      run_container(dir)
+      output(dir)
+    end
+  end
+
   private
 
   # Writes the submission and every case input into the directory shared with the container.
+  # Written as bytes: a case input arrives from a binary column, and transcoding it would
+  # raise on the first accent — the reasoning of ADR-0003 applied to the filesystem.
   #: (String, String, Array[Hash[Symbol, String]]) -> void
   def prepare(dir, code, cases)
     FileUtils.mkdir_p([ "#{dir}/code/cases", "#{dir}/out" ])
-    File.write("#{dir}/code/solution.py", code)
+    File.binwrite("#{dir}/code/solution.py", code)
     cases.each_with_index do |c, i|
-      File.write("#{dir}/code/cases/#{format('%03d', i + 1)}.in", c[:input])
+      File.binwrite("#{dir}/code/cases/#{format('%03d', i + 1)}.in", c[:input])
     end
     FileUtils.chmod(0o777, "#{dir}/out")
   end
@@ -82,27 +122,12 @@ class Judge
       "--user", "65534:65534",
       "--security-opt=no-new-privileges",
       "-e", "PYTHONDONTWRITEBYTECODE=1",
+      "-e", "TIME_LIMIT=#{@time_limit}",
+      "-e", "CE_EXIT=#{CE_EXIT}",
       "-v", "#{dir}/code:/code:ro",
       "-v", "#{dir}/out:/out",
-      @image, "sh", "-c", container_script
+      @image, "sh", "-c", SCRIPT
     )
-  end
-
-  # Builds the shell script the container runs: compile once, then one process per case.
-  #: () -> String
-  def container_script
-    <<~SH
-      python -c 'import sys; compile(open(sys.argv[1]).read(), sys.argv[1], "exec")' \
-        /code/solution.py 2>/out/ce.txt || exit #{CE_EXIT}
-      for input in /code/cases/*.in; do
-        n=$(basename "$input" .in)
-        timeout #{@time_limit} python /code/solution.py < "$input" \
-          > "/out/$n.out" 2> "/out/$n.err"
-        status=$?
-        echo "$status" > "/out/$n.code"
-        [ "$status" -eq 0 ] || exit 0
-      done
-    SH
   end
 
   # Reads the container output and returns the verdict of the first case that is not AC.
@@ -159,5 +184,23 @@ class Judge
   #: (String) -> String
   def normalize(text)
     text.b.lines.map(&:rstrip).join("\n").rstrip
+  end
+
+  # Reads the single case's output, refusing anything that did not exit cleanly. Read as
+  # bytes: what is stored must be what the program printed, down to the byte (ADR-0003).
+  #: (String) -> String
+  def output(dir)
+    ce = "#{dir}/out/ce.txt"
+    raise Failed.new("CE", File.read(ce)) if File.exist?(ce) && !File.read(ce).empty?
+
+    status_file = "#{dir}/out/001.code"
+    raise Failed.new("RE", "container exited before running") unless File.exist?(status_file)
+
+    status = File.read(status_file).strip.to_i
+    unless status.zero?
+      raise Failed.new(runtime_verdict(status), File.read("#{dir}/out/001.err"))
+    end
+
+    File.binread("#{dir}/out/001.out")
   end
 end
