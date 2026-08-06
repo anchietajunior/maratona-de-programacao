@@ -1,0 +1,7 @@
+# Generated from app/models/clarification/broadcastable.rb with RBS::Inline
+
+# O Pedido aparece na fila da Comissão e na tela de quem perguntou, sem que ninguém
+# recarregue nada.
+module Clarification::Broadcastable
+  extend ActiveSupport::Concern
+end

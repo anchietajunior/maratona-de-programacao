@@ -1,0 +1,8 @@
+<% if contest.open? %>
+  <span class="font-mono text-code text-muted" title="<%= t("nav.remaining") %>"
+        data-controller="countdown" data-countdown-seconds-value="<%= contest.remaining %>"></span>
+<% elsif contest.ended? %>
+  <span class="text-body-sm text-muted"><%= t("nav.ended") %></span>
+<% else %>
+  <span class="text-body-sm text-muted"><%= t("nav.not_started") %></span>
+<% end %>

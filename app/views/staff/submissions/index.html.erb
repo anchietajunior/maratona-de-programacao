@@ -1,0 +1,16 @@
+<% content_for :title, t(".title") %>
+
+<%= render "layouts/staff_nav" %>
+
+<h1 class="text-display-md"><%= t(".title") %></h1>
+<p class="mt-sm max-w-prose text-body-sm text-muted"><%= t(".subtitle", count: @submissions.size) %></p>
+
+<% if @submissions.any? %>
+  <ul class="mt-xl grid gap-base">
+    <% @submissions.each do |submission| %>
+      <%= render "staff/submissions/submission", submission: submission %>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="mt-xl max-w-prose text-body-md text-body"><%= t(".empty") %></p>
+<% end %>

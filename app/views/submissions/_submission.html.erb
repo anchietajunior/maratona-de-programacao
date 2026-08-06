@@ -1,0 +1,7 @@
+<li class="flex flex-wrap items-center justify-between gap-sm px-base py-sm">
+  <div class="flex items-center gap-sm">
+    <%= verdict_badge(submission) %>
+    <span class="text-body-sm text-body"><%= verdict_meaning(submission) %></span>
+  </div>
+  <span class="font-mono text-code text-muted"><%= t("submissions.at", count: submission.elapsed_minutes) %></span>
+</li>

@@ -1,0 +1,10 @@
+<% content_for :title, t(".title") %>
+
+<%= render "layouts/team_nav" %>
+
+<h1 class="text-display-md"><%= t(".title") %></h1>
+<p class="mt-sm max-w-prose text-body-md text-body"><%= t(".subtitle") %></p>
+
+<section class="mt-xl">
+  <%= render "standings/table", teams: @teams %>
+</section>

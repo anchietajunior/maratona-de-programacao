@@ -1,6 +1,8 @@
 # Generated from app/models/problem.rb with RBS::Inline
 
 class Problem < ApplicationRecord
+  include Verifiable
+
   # Nível de Dificuldade e o que cada um vale (Art. 19).
   POINTS: untyped
 
@@ -14,4 +16,10 @@ class Problem < ApplicationRecord
   # Os Casos de Teste no formato que o Juiz consome.
   # : () -> Array[Hash[Symbol, String]]
   def judging_cases: () -> Array[Hash[Symbol, String]]
+
+  private
+
+  # A posição é sequencial dentro da Competição — a Comissão não a digita.
+  # : () -> void
+  def assign_position: () -> void
 end

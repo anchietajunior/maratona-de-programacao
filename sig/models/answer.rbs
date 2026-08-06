@@ -1,0 +1,7 @@
+# Generated from app/models/answer.rb with RBS::Inline
+
+# A Resposta da Comissão Técnica a um Pedido de Esclarecimento (Art. 36). Quando o assunto
+# é de interesse coletivo, ela vai para todas as Equipes.
+class Answer < ApplicationRecord
+  include Broadcastable
+end

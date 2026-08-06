@@ -10,12 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_02_204703) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_05_041960) do
+  create_table "answers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "body", null: false
+    t.bigint "clarification_id", null: false
+    t.boolean "collective", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["clarification_id"], name: "index_answers_on_clarification_id", unique: true
+    t.index ["user_id"], name: "index_answers_on_user_id"
+  end
+
+  create_table "clarifications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "problem_id", null: false
+    t.text "question", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["problem_id"], name: "index_clarifications_on_problem_id"
+    t.index ["user_id"], name: "index_clarifications_on_user_id"
+  end
+
   create_table "contests", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "ended_at"
+    t.datetime "published_at"
     t.datetime "started_at"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "deliveries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "problem_id", null: false
+    t.bigint "staff_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["problem_id"], name: "index_deliveries_on_problem_id"
+    t.index ["staff_id"], name: "index_deliveries_on_staff_id"
+    t.index ["user_id", "problem_id"], name: "index_deliveries_on_user_id_and_problem_id", unique: true
+    t.index ["user_id"], name: "index_deliveries_on_user_id"
   end
 
   create_table "problems", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -71,6 +105,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_02_204703) do
     t.index ["nickname"], name: "index_users_on_nickname", unique: true
   end
 
+  add_foreign_key "answers", "clarifications"
+  add_foreign_key "answers", "users"
+  add_foreign_key "clarifications", "problems"
+  add_foreign_key "clarifications", "users"
+  add_foreign_key "deliveries", "problems"
+  add_foreign_key "deliveries", "users"
+  add_foreign_key "deliveries", "users", column: "staff_id"
   add_foreign_key "problems", "contests"
   add_foreign_key "sessions", "users"
   add_foreign_key "submissions", "problems"

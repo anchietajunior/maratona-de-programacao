@@ -1,0 +1,31 @@
+<% content_for :title, t(".title") %>
+
+<%= render "layouts/staff_nav" %>
+
+<div class="flex flex-wrap items-center justify-between gap-base">
+  <h1 class="text-display-md"><%= t(".title") %></h1>
+  <%= link_to t(".new"), new_staff_problem_path,
+        class: "rounded-md bg-primary px-md py-sm text-button text-on-primary" %>
+</div>
+
+<p class="mt-sm max-w-prose text-body-sm text-muted"><%= t(".subtitle", count: @problems.size) %></p>
+
+<% if @problems.any? %>
+  <ul class="mt-xl divide-y divide-hairline rounded-lg border border-hairline bg-surface-card">
+    <% @problems.each do |problem| %>
+      <li class="flex flex-wrap items-center justify-between gap-sm px-base py-sm">
+        <div>
+          <%= link_to problem.title, staff_problem_path(problem), class: "text-body-md text-ink" %>
+          <span class="ml-xs text-body-sm text-muted">
+            <%= t("problems.number", position: problem.position) %> ·
+            <%= t("problems.difficulties.#{problem.difficulty}") %> ·
+            <%= t("staff.problems.testcases", count: problem.testcases.size) %>
+          </span>
+        </div>
+        <%= link_to t(".edit"), edit_staff_problem_path(problem), class: "text-nav-link text-ink underline" %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="mt-xl max-w-prose text-body-md text-body"><%= t(".empty") %></p>
+<% end %>

@@ -1,0 +1,8 @@
+<% content_for :title, t(".title") %>
+
+<%= render "layouts/staff_nav" %>
+
+<h1 class="text-display-md"><%= t(".title") %></h1>
+<p class="mt-sm max-w-prose text-body-sm text-muted"><%= t(".subtitle") %></p>
+
+<%= render "staff/problems/form", problem: @problem %>

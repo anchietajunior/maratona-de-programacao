@@ -1,0 +1,7 @@
+# Generated from app/models/submission/broadcastable.rb with RBS::Inline
+
+# O Veredicto chega sozinho à tela da própria Equipe e ao monitor da Comissão. Nenhum
+# fluxo aqui alcança outra Equipe: o que é secreto é a posição, não o Veredicto (Art. 34).
+module Submission::Broadcastable
+  extend ActiveSupport::Concern
+end

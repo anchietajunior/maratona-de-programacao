@@ -1,6 +1,8 @@
 # Generated from app/models/user.rb with RBS::Inline
 
 class User < ApplicationRecord
+  include Scoreable
+
   # Uma Equipe usa um computador só, então já tem Sessão ativa em outra máquina.
   # Staff não tem essa restrição (ADR-0009, Art. 21).
   # : () -> bool

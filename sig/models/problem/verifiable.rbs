@@ -1,0 +1,17 @@
+# Generated from app/models/problem/verifiable.rb with RBS::Inline
+
+# A Solução de Referência é a autoridade sobre o Problema: é ela que gera a saída esperada
+# de cada Caso de Teste (ADR-0003). Trocá-la sem que ela passe nos Casos de Teste que já
+# existem mudaria as respostas em silêncio, então o Problema recusa a troca.
+module Problem::Verifiable
+  extend ActiveSupport::Concern
+
+  # O Veredicto da Solução de Referência contra os Casos de Teste do próprio Problema.
+  # : () -> String
+  def reference_verdict: () -> String
+
+  private
+
+  # : () -> void
+  def reference_solution_must_pass: () -> void
+end

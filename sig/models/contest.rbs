@@ -1,0 +1,49 @@
+# Generated from app/models/contest.rb with RBS::Inline
+
+class Contest < ApplicationRecord
+  # Três horas contadas do início real, nunca de um horário de parede (ADR-0008).
+  DURATION: untyped
+
+  # Há uma única Competição no sistema (Art. 20).
+  # : () -> Contest?
+  def self.current: () -> Contest?
+
+  # : () -> void
+  def start: () -> void
+
+  # : () -> void
+  def finish: () -> void
+
+  # A Classificação só fica visível às Equipes depois da premiação (Art. 28).
+  # : () -> void
+  def publish: () -> void
+
+  # : () -> void
+  def unpublish: () -> void
+
+  # : () -> bool
+  def started?: () -> bool
+
+  # : () -> bool
+  def published?: () -> bool
+
+  # O instante do encerramento: três horas depois do início, ou antes, se a Comissão
+  # encerrar na mão.
+  # : () -> Time?
+  def deadline: () -> Time?
+
+  # : () -> bool
+  def open?: () -> bool
+
+  # : () -> bool
+  def ended?: () -> bool
+
+  # Segundos que faltam para o encerramento, nunca negativo.
+  # : () -> Integer
+  def remaining: () -> Integer
+
+  # Minutos inteiros entre o início real e o instante, que é como o Tempo Acumulado é
+  # contado (Art. 31).
+  # : (Time) -> Integer
+  def minutes_until: (Time) -> Integer
+end

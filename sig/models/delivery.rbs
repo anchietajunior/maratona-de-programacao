@@ -1,0 +1,5 @@
+# Generated from app/models/delivery.rb with RBS::Inline
+
+# A entrega do Balão de um Problema resolvido, com quem entregou e quando (Art. 25).
+class Delivery < ApplicationRecord
+end

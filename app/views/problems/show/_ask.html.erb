@@ -1,0 +1,15 @@
+<% if contest.open? %>
+  <section class="mt-xl">
+    <h2 class="text-display-sm"><%= t("problems.show.ask_title") %></h2>
+    <p class="mt-xs max-w-prose text-body-sm text-muted"><%= t("problems.show.ask_hint") %></p>
+
+    <%= form_with model: [ problem, Clarification.new ], class: "mt-base" do |form| %>
+      <%= form.label :question, t("problems.show.question"), class: "sr-only" %>
+      <%= form.text_area :question, rows: 3, required: true,
+            placeholder: t("problems.show.question_placeholder"),
+            class: "block w-full rounded-md border border-hairline-strong bg-surface-card p-base text-body-md text-ink focus:outline-primary" %>
+      <%= form.submit t("problems.show.ask"),
+            class: "mt-base h-[40px] cursor-pointer rounded-md border border-hairline-strong bg-surface-card px-md text-button text-ink" %>
+    <% end %>
+  </section>
+<% end %>

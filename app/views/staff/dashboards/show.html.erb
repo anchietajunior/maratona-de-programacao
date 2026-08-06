@@ -1,16 +1,55 @@
 <% content_for :title, t(".title") %>
 
-<%= render "layouts/signed_in_bar" %>
+<%= render "layouts/staff_nav" %>
 
 <h1 class="text-display-md"><%= t(".title") %></h1>
 
 <section class="mt-lg rounded-lg border border-hairline bg-surface-card p-lg">
-  <h2 class="text-title-md"><%= t(".teams", count: @teams.count) %></h2>
-  <ul class="mt-sm text-body-sm text-body">
+  <h2 class="text-title-md"><%= t(".contest") %></h2>
+
+  <% if contest.open? %>
+    <p class="mt-xs text-body-sm text-body"><%= t(".running") %></p>
+    <%= button_to t(".close"), staff_closure_path,
+          class: "mt-base h-[40px] cursor-pointer rounded-md border border-hairline-strong bg-surface-card px-md text-button text-ink" %>
+  <% elsif contest.ended? %>
+    <p class="mt-xs text-body-sm text-body"><%= t(".ended") %></p>
+  <% else %>
+    <p class="mt-xs max-w-prose text-body-sm text-body"><%= t(".not_started", count: @problems.size) %></p>
+    <%= button_to t(".start"), staff_start_path,
+          class: "mt-base h-[40px] cursor-pointer rounded-md bg-primary px-md text-button text-on-primary" %>
+  <% end %>
+
+  <% if contest.started? %>
+    <div class="mt-lg border-t border-hairline pt-lg">
+      <p class="max-w-prose text-body-sm text-muted"><%= t(".restart_hint") %></p>
+      <%= button_to t(".restart"), staff_start_path, method: :delete,
+            form: { data: { turbo_confirm: t(".restart_confirm") } },
+            class: "mt-sm h-[40px] cursor-pointer rounded-md border border-hairline-strong bg-surface-card px-md text-button text-error" %>
+    </div>
+  <% end %>
+</section>
+
+<section class="mt-xl">
+  <h2 class="text-title-md"><%= t(".teams", count: @teams.size) %></h2>
+
+  <ul class="mt-base divide-y divide-hairline rounded-lg border border-hairline bg-surface-card">
     <% @teams.each do |team| %>
-      <li><%= team.name %> — <span class="font-mono"><%= team.nickname %></span></li>
+      <li class="flex flex-wrap items-center justify-between gap-sm px-base py-sm">
+        <div>
+          <span class="text-body-sm text-ink"><%= team.name %></span>
+          <span class="ml-xs font-mono text-code text-muted"><%= team.nickname %></span>
+        </div>
+
+        <% if session = team.sessions.first %>
+          <div class="flex items-center gap-sm">
+            <span class="text-body-sm text-success"><%= t(".connected") %></span>
+            <%= button_to t(".disconnect"), staff_session_path(session), method: :delete,
+                  class: "cursor-pointer rounded-md border border-hairline-strong bg-surface-card px-base py-xs text-button text-ink" %>
+          </div>
+        <% else %>
+          <span class="text-body-sm text-muted"><%= t(".disconnected") %></span>
+        <% end %>
+      </li>
     <% end %>
   </ul>
 </section>
-
-<p class="mt-lg max-w-prose text-body-sm text-muted"><%= t(".pending") %></p>

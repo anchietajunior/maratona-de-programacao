@@ -1,7 +1,46 @@
 <% content_for :title, t(".title") %>
 
-<%= render "layouts/signed_in_bar" %>
+<%= render "layouts/team_nav" %>
 
 <h1 class="text-display-md"><%= t(".title") %></h1>
 
-<p class="mt-lg max-w-prose text-body-md text-body"><%= t(".waiting") %></p>
+<% if contest.started? %>
+  <p class="mt-sm max-w-prose text-body-sm text-muted"><%= t(".private") %></p>
+
+  <section class="mt-lg grid gap-base sm:grid-cols-3">
+    <%= render "scoreboards/stat", label: t(".score"), value: Current.user.score %>
+    <%= render "scoreboards/stat", label: t(".solved"), value: Current.user.solved_problems.size %>
+    <%= render "scoreboards/stat", label: t(".total_time"), value: in_minutes(Current.user.total_time) %>
+  </section>
+
+  <section class="mt-xl overflow-x-auto rounded-lg border border-hairline bg-surface-card">
+    <table class="w-full border-collapse text-body-sm">
+      <thead class="border-b border-hairline text-caption-uppercase uppercase text-muted">
+        <tr>
+          <th class="px-base py-sm text-left"><%= t(".problem") %></th>
+          <th class="px-base py-sm text-left"><%= t(".difficulty") %></th>
+          <th class="px-base py-sm text-right"><%= t(".attempts") %></th>
+          <th class="px-base py-sm text-right"><%= t(".status") %></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-hairline">
+        <% @problems.each do |problem| %>
+          <tr>
+            <td class="px-base py-sm">
+              <%= link_to problem.title, problem_path(problem), class: "text-ink" %>
+            </td>
+            <td class="px-base py-sm text-body"><%= t("problems.difficulties.#{problem.difficulty}") %></td>
+            <td class="px-base py-sm text-right text-body"><%= Current.user.attempts_on(problem) %></td>
+            <td class="px-base py-sm text-right <%= Current.user.solved?(problem) ? "text-success" : "text-muted" %>">
+              <%= Current.user.solved?(problem) ? t("problems.solved") : t(".unsolved") %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+
+  <p class="mt-lg max-w-prose text-body-sm text-muted"><%= t(".penalty_note") %></p>
+<% else %>
+  <p class="mt-lg max-w-prose text-body-md text-body"><%= t(".waiting") %></p>
+<% end %>

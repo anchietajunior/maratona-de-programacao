@@ -1,0 +1,13 @@
+# Generated from app/models/testcase/generated.rb with RBS::Inline
+
+# A saída esperada nunca é digitada: ela é exatamente o que a Solução de Referência imprime
+# para a entrada informada (ADR-0003). Se a referência não roda naquela entrada, o Caso de
+# Teste não existe.
+module Testcase::Generated
+  extend ActiveSupport::Concern
+
+  private
+
+  # : () -> void
+  def generate_expected_output: () -> void
+end

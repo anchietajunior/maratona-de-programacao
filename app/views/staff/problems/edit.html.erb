@@ -1,0 +1,14 @@
+<% content_for :title, t(".title") %>
+
+<%= render "layouts/staff_nav" %>
+
+<h1 class="text-display-md"><%= t(".title") %></h1>
+<p class="mt-sm max-w-prose text-body-sm text-muted"><%= t(".subtitle") %></p>
+
+<%= render "staff/problems/form", problem: @problem %>
+
+<section class="mt-section border-t border-hairline pt-lg">
+  <%= button_to t(".destroy"), staff_problem_path(@problem), method: :delete,
+        form: { data: { turbo_confirm: t(".destroy_confirm") } },
+        class: "h-[40px] cursor-pointer rounded-md border border-hairline-strong bg-surface-card px-md text-button text-error" %>
+</section>

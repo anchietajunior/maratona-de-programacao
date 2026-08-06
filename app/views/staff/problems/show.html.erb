@@ -1,0 +1,48 @@
+<% content_for :title, @problem.title %>
+
+<%= render "layouts/staff_nav" %>
+
+<div class="flex flex-wrap items-center justify-between gap-base">
+  <div>
+    <p class="text-caption-uppercase uppercase text-muted"><%= t("problems.number", position: @problem.position) %></p>
+    <h1 class="mt-xs text-display-md"><%= @problem.title %></h1>
+  </div>
+  <%= link_to t(".edit"), edit_staff_problem_path(@problem),
+        class: "rounded-md border border-hairline-strong bg-surface-card px-md py-sm text-button text-ink" %>
+</div>
+
+<div class="mt-sm flex flex-wrap items-center gap-xs">
+  <%= difficulty_badge(@problem) %>
+  <span class="text-body-sm text-muted"><%= t("problems.points", count: @problem.points) %></span>
+</div>
+
+<section class="mt-xl">
+  <h2 class="text-display-sm"><%= t(".statement") %></h2>
+  <article class="statement mt-base max-w-prose"><%= markdown(@problem.statement) %></article>
+</section>
+
+<section class="mt-section">
+  <h2 class="text-display-sm"><%= t(".reference_solution") %></h2>
+  <pre class="mt-base overflow-x-auto rounded-lg border border-hairline bg-surface-card p-base font-mono text-code text-ink"><%= @problem.reference_solution %></pre>
+</section>
+
+<section class="mt-section">
+  <h2 class="text-display-sm"><%= t(".testcases", count: @problem.testcases.size) %></h2>
+  <p class="mt-xs max-w-prose text-body-sm text-muted"><%= t(".testcases_hint") %></p>
+
+  <% if @problem.testcases.any? %>
+    <ul class="mt-base grid gap-base">
+      <% @problem.testcases.chronologically.each_with_index do |testcase, index| %>
+        <%= render "staff/testcases/testcase", problem: @problem, testcase: testcase, number: index + 1 %>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= form_with model: [ :staff, @problem, @testcase ], class: "mt-lg max-w-prose" do |form| %>
+    <%= form.label :input, t(".input"), class: "block text-body-sm text-body" %>
+    <%= form.text_area :input, rows: 6,
+          class: "mt-xxs block w-full rounded-lg border border-hairline-strong bg-surface-card p-base font-mono text-code text-ink focus:outline-primary" %>
+    <%= form.submit t(".add_testcase"),
+          class: "mt-base h-[40px] cursor-pointer rounded-md bg-primary px-md text-button text-on-primary" %>
+  <% end %>
+</section>

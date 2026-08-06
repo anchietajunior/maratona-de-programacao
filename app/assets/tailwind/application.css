@@ -52,9 +52,25 @@
   --text-display-md--letter-spacing: -0.325px;
   --text-display-md--font-weight: 400;
 
+  --text-display-sm: 22px;
+  --text-display-sm--line-height: 1.3;
+  --text-display-sm--letter-spacing: -0.11px;
+  --text-display-sm--font-weight: 400;
+
   --text-title-md: 18px;
   --text-title-md--line-height: 1.4;
   --text-title-md--font-weight: 600;
+
+  --text-title-sm: 16px;
+  --text-title-sm--line-height: 1.4;
+  --text-title-sm--font-weight: 600;
+
+  --text-nav-link: 14px;
+  --text-nav-link--line-height: 1.4;
+  --text-nav-link--font-weight: 500;
+
+  --text-code: 13px;
+  --text-code--line-height: 1.5;
 
   --text-body-md: 16px;
   --text-body-md--line-height: 1.5;
@@ -85,4 +101,65 @@
   --spacing-section: 80px;
 
   --container-content: 1200px;
+}
+
+/* O Enunciado chega como HTML gerado pelo kramdown: não há markup nosso para receber
+   utilitários, então o estilo dessas tags mora aqui — sempre nos tokens do design.md. */
+@layer components {
+  .statement {
+    color: var(--color-body);
+    font-size: var(--text-body-md);
+    line-height: 1.5;
+  }
+
+  .statement h1,
+  .statement h2,
+  .statement h3 {
+    color: var(--color-ink);
+    font-size: var(--text-display-sm);
+    letter-spacing: var(--text-display-sm--letter-spacing);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .statement p {
+    margin-bottom: var(--spacing-base);
+  }
+
+  .statement ul,
+  .statement ol {
+    margin: 0 0 var(--spacing-base) var(--spacing-lg);
+    list-style: disc;
+  }
+
+  .statement ol {
+    list-style: decimal;
+  }
+
+  .statement code {
+    font-family: var(--font-mono);
+    font-size: var(--text-code);
+  }
+
+  .statement pre {
+    background: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-base);
+    margin-bottom: var(--spacing-base);
+    overflow-x: auto;
+  }
+
+  .statement table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--spacing-base);
+  }
+
+  .statement th,
+  .statement td {
+    border: 1px solid var(--color-hairline);
+    padding: var(--spacing-xs);
+    text-align: left;
+  }
 }

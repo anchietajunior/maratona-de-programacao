@@ -1,0 +1,41 @@
+<% content_for :title, t(".title") %>
+
+<%= render "layouts/staff_nav" %>
+
+<h1 class="text-display-md"><%= t(".title") %></h1>
+<p class="mt-sm max-w-prose text-body-sm text-muted"><%= t(".subtitle") %></p>
+
+<% if @teams.any? %>
+  <ul class="mt-xl grid gap-base">
+    <% @teams.each do |team| %>
+      <li class="rounded-lg border border-hairline bg-surface-card p-lg">
+        <h2 class="text-title-md text-ink"><%= team.name %></h2>
+
+        <ul class="mt-base divide-y divide-hairline">
+          <% team.solved_problems.each do |problem| %>
+            <% delivery = team.deliveries.find { |candidate| candidate.problem_id == problem.id } %>
+            <li class="flex flex-wrap items-center justify-between gap-sm py-sm">
+              <span class="text-body-sm text-ink">
+                <%= t("problems.number", position: problem.position) %> · <%= problem.title %>
+              </span>
+
+              <% if delivery %>
+                <div class="flex items-center gap-sm">
+                  <span class="text-body-sm text-success"><%= t(".delivered") %></span>
+                  <%= button_to t(".undo"), staff_delivery_path(delivery), method: :delete,
+                        class: "cursor-pointer rounded-md border border-hairline-strong bg-surface-card px-base py-xs text-button text-ink" %>
+                </div>
+              <% else %>
+                <%= button_to t(".deliver"), staff_deliveries_path,
+                      params: { delivery: { user_id: team.id, problem_id: problem.id } },
+                      class: "cursor-pointer rounded-md bg-primary px-base py-xs text-button text-on-primary" %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="mt-xl max-w-prose text-body-md text-body"><%= t(".empty") %></p>
+<% end %>

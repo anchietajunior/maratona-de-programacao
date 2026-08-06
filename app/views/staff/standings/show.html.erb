@@ -1,0 +1,22 @@
+<% content_for :title, t(".title") %>
+
+<%= render "layouts/staff_nav" %>
+
+<h1 class="text-display-md"><%= t(".title") %></h1>
+<p class="mt-sm max-w-prose text-body-md text-body"><%= t(".subtitle") %></p>
+
+<section class="mt-lg rounded-lg border border-hairline bg-surface-card p-lg">
+  <% if contest.published? %>
+    <p class="text-body-md text-ink"><%= t(".published") %></p>
+    <%= button_to t(".withdraw"), staff_publication_path, method: :delete,
+          class: "mt-base h-[40px] cursor-pointer rounded-md border border-hairline-strong bg-surface-card px-md text-button text-ink" %>
+  <% else %>
+    <p class="text-body-md text-ink"><%= t(".unpublished") %></p>
+    <%= button_to t(".publish"), staff_publication_path,
+          class: "mt-base h-[40px] cursor-pointer rounded-md bg-primary px-md text-button text-on-primary" %>
+  <% end %>
+</section>
+
+<section class="mt-xl">
+  <%= render "standings/table", teams: @teams %>
+</section>

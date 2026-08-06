@@ -29,12 +29,13 @@ class Submission::JudgeableTest < ActiveSupport::TestCase
     assert_equal "WA", submission.reload.verdict
   end
 
-  # A saída esperada vem de coluna binária: sem comparação por bytes, todo Problema com
-  # acento na saída daria WA (ADR-0003).
+  # A saída esperada é gerada pela Solução de Referência e guardada em coluna binária: sem
+  # comparação por bytes, todo Problema com acento na saída daria WA (ADR-0003).
   test "an accented expected output is judged by its bytes" do
     problem = problems(:easy_sum)
     problem.testcases.destroy_all
-    problem.testcases.create! input: "1\n", expected_output: "não\n"
+    problem.update! reference_solution: %(input()\nprint("não")\n)
+    problem.testcases.create! input: "1\n"
     submission = problem.submissions.create! user: users(:hopper), code: %(input()\nprint("não")\n)
 
     submission.judge_now

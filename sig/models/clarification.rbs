@@ -1,0 +1,15 @@
+# Generated from app/models/clarification.rb with RBS::Inline
+
+# Pedido de Esclarecimento: dúvida da Equipe sobre o Enunciado de um Problema (Art. 35).
+class Clarification < ApplicationRecord
+  include Broadcastable
+
+  # : () -> bool
+  def answered?: () -> bool
+
+  private
+
+  # Dúvida se pergunta durante a Competição (Art. 35).
+  # : () -> void
+  def contest_must_be_open: () -> void
+end

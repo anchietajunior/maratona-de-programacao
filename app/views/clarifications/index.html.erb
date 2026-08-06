@@ -1,0 +1,35 @@
+<% content_for :title, t(".title") %>
+
+<%= render "layouts/team_nav" %>
+
+<h1 class="text-display-md"><%= t(".title") %></h1>
+<p class="mt-sm max-w-prose text-body-md text-body"><%= t(".subtitle") %></p>
+
+<section class="mt-xl">
+  <h2 class="text-display-sm"><%= t(".announcements") %></h2>
+  <p class="mt-xs max-w-prose text-body-sm text-muted"><%= t(".announcements_hint") %></p>
+
+  <% if @announcements.any? %>
+    <ul class="mt-base grid gap-base">
+      <% @announcements.each do |clarification| %>
+        <%= render "clarifications/clarification", clarification: clarification %>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="mt-sm text-body-sm text-muted"><%= t(".no_announcements") %></p>
+  <% end %>
+</section>
+
+<section class="mt-section">
+  <h2 class="text-display-sm"><%= t(".mine") %></h2>
+
+  <% if @clarifications.any? %>
+    <ul class="mt-base grid gap-base">
+      <% @clarifications.each do |clarification| %>
+        <%= render "clarifications/clarification", clarification: clarification %>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="mt-sm text-body-sm text-muted"><%= t(".no_clarifications") %></p>
+  <% end %>
+</section>

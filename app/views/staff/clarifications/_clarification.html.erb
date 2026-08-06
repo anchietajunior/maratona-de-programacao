@@ -1,0 +1,38 @@
+<li class="rounded-lg border border-hairline bg-surface-card p-lg">
+  <div class="flex flex-wrap items-center justify-between gap-sm">
+    <p class="text-caption-uppercase uppercase text-muted">
+      <%= t("problems.number", position: clarification.problem.position) %> · <%= clarification.problem.title %>
+    </p>
+    <span class="text-body-sm text-muted"><%= clarification.user.name %></span>
+  </div>
+
+  <p class="mt-sm text-body-md text-ink"><%= clarification.question %></p>
+
+  <% if clarification.answered? %>
+    <div class="mt-base border-t border-hairline pt-base">
+      <p class="text-caption-uppercase uppercase text-muted">
+        <%= t("clarifications.answer") %>
+        <% if clarification.answer.collective? %>
+          · <%= t("staff.clarifications.collective_mark") %>
+        <% end %>
+      </p>
+      <p class="mt-xs text-body-md text-body"><%= clarification.answer.body %></p>
+    </div>
+  <% else %>
+    <%= form_with model: Answer.new, url: staff_clarification_answer_path(clarification),
+          class: "mt-base border-t border-hairline pt-base" do |form| %>
+      <%= form.label :body, t("staff.clarifications.answer_label"), class: "block text-body-sm text-body" %>
+      <%= form.text_area :body, rows: 3, required: true,
+            placeholder: t("staff.clarifications.answer_placeholder"),
+            class: "mt-xxs block w-full rounded-md border border-hairline-strong bg-surface-card p-base text-body-md text-ink focus:outline-primary" %>
+
+      <label class="mt-sm flex items-center gap-xs text-body-sm text-body">
+        <%= form.check_box :collective %>
+        <%= t("staff.clarifications.collective") %>
+      </label>
+
+      <%= form.submit t("staff.clarifications.submit"),
+            class: "mt-base h-[40px] cursor-pointer rounded-md bg-primary px-md text-button text-on-primary" %>
+    <% end %>
+  <% end %>
+</li>

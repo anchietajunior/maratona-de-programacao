@@ -1,4 +1,20 @@
 pt-BR:
+  shared:
+    minutes:
+      zero: "0 min"
+      one: "1 min"
+      other: "%{count} min"
+  nav:
+    dashboard: "Painel"
+    scoreboard: "Placar"
+    problems: "Problemas"
+    submissions: "Submissões"
+    clarifications: "Esclarecimentos"
+    balloons: "Balões"
+    standings: "Classificação"
+    remaining: "Tempo restante"
+    not_started: "Não iniciada"
+    ended: "Encerrada"
   home:
     show:
       eyebrow: "UniRios · Sistemas de Informação"
@@ -32,16 +48,262 @@ pt-BR:
       failed: "Identificação ou senha inválida."
       signed_in_elsewhere: "Esta equipe já está conectada em outro computador. Cada equipe usa uma máquina só (Art. 21). Se o computador anterior travou, espere alguns minutos ou chame a Comissão Organizadora."
       rate_limited: "Tentativas demais. Espere alguns minutos e tente de novo."
+  problems:
+    number: "Problema %{position}"
+    points:
+      one: "1 ponto"
+      other: "%{count} pontos"
+    solved: "Resolvido"
+    attempts:
+      zero: "Nenhuma tentativa"
+      one: "1 tentativa"
+      other: "%{count} tentativas"
+    difficulties:
+      easy: "Fácil"
+      medium: "Médio"
+      hard: "Difícil"
+    index:
+      title: "Problemas"
+      subtitle: "Resolva na ordem que quiser. O nível de dificuldade define quantos pontos o problema vale."
+    show:
+      submit_title: "Submeter solução"
+      submit_hint: "Cole aqui o código Python 3 pronto. Você pode submeter quantas vezes quiser enquanto a competição estiver aberta."
+      code: "Código"
+      submit: "Submeter"
+      closed: "A competição não está aberta para submissões neste momento."
+      history: "Suas submissões"
+      no_submissions: "Você ainda não submeteu nada neste problema."
+      ask_title: "Pedir esclarecimento"
+      ask_hint: "Dúvida sobre o enunciado? A Comissão Técnica responde por aqui."
+      question: "Pergunta"
+      question_placeholder: "O que exatamente está em dúvida no enunciado?"
+      ask: "Enviar pergunta"
+  submissions:
+    at: "aos %{count} min"
+    verdicts:
+      AC: "Aceita"
+      WA: "Resposta errada"
+      PE: "Erro de formatação da saída"
+      TLE: "Tempo excedido"
+      MLE: "Memória excedida"
+      RE: "Erro em tempo de execução"
+      CE: "Erro de compilação"
+      pending: "Na fila, ainda sendo julgada"
+      pending_sigla: "..."
+    create:
+      created: "Submissão recebida. O veredicto aparece aqui assim que o julgamento terminar."
   scoreboards:
     show:
       title: "Placar Individual"
       waiting: "A competição ainda não começou. Quando a Comissão Organizadora iniciar, os problemas aparecem aqui e você poderá submeter."
+      private: "Aqui só aparecem os seus dados. A classificação geral sai na cerimônia de premiação (Art. 34)."
+      score: "Pontuação"
+      solved: "Resolvidos"
+      total_time: "Tempo acumulado"
+      problem: "Problema"
+      difficulty: "Dificuldade"
+      attempts: "Tentativas"
+      status: "Situação"
+      unsolved: "Em aberto"
+      penalty_note: "Cada tentativa errada em um problema que você venha a resolver soma 10 minutos ao tempo acumulado. Tentativas em problema que continua sem solução não pesam."
+  clarifications:
+    answer: "Resposta da Comissão Técnica"
+    waiting: "Aguardando resposta."
+    index:
+      title: "Esclarecimentos"
+      subtitle: "Dúvidas sobre enunciado são feitas na página do problema."
+      announcements: "Avisos a todas as equipes"
+      announcements_hint: "Quando um esclarecimento é de interesse coletivo, ele aparece aqui para todo mundo (Art. 36)."
+      no_announcements: "Nenhum aviso até agora."
+      mine: "Suas perguntas"
+      no_clarifications: "Você ainda não pediu nenhum esclarecimento."
+    create:
+      created: "Pergunta enviada à Comissão Técnica."
+  standings:
+    position: "#"
+    team: "Equipe"
+    score: "Pontuação"
+    total_time: "Tempo acumulado"
+    solved: "Resolvidos"
+    show:
+      title: "Classificação"
+      subtitle: "Resultado final da 7ª Maratona de Programação."
+      unpublished: "A classificação ainda não foi divulgada."
   staff:
+    problems:
+      testcases:
+        zero: "sem casos de teste"
+        one: "1 caso de teste"
+        other: "%{count} casos de teste"
+      index:
+        title: "Problemas"
+        subtitle:
+          zero: "Nenhum problema cadastrado."
+          one: "1 problema cadastrado."
+          other: "%{count} problemas cadastrados."
+        new: "Novo problema"
+        edit: "Editar"
+        empty: "Nenhum problema cadastrado ainda. Comece pelo primeiro — a saída esperada de cada caso de teste é gerada rodando a solução de referência."
+      new:
+        title: "Novo problema"
+        subtitle: "Depois de salvar, você cadastra os casos de teste informando só a entrada."
+      edit:
+        title: "Editar problema"
+        subtitle: "Trocar a solução de referência só é aceito se ela continuar passando em todos os casos de teste já cadastrados."
+        destroy: "Excluir problema"
+        destroy_confirm: "Excluir o problema apaga também seus casos de teste e submissões. Confirma?"
+      show:
+        edit: "Editar"
+        statement: "Enunciado"
+        reference_solution: "Solução de referência"
+        testcases:
+          zero: "Casos de teste"
+          one: "Casos de teste (1)"
+          other: "Casos de teste (%{count})"
+        testcases_hint: "Informe só a entrada. A saída esperada é gerada rodando a solução de referência, nunca digitada."
+        input: "Entrada"
+        add_testcase: "Gerar caso de teste"
+      form:
+        title_field: "Título"
+        difficulty: "Nível de dificuldade"
+        statement: "Enunciado"
+        statement_hint: "Markdown. Especifique exatamente o formato de entrada e de saída."
+        reference_solution: "Solução de referência"
+        reference_solution_hint: "Python 3. É ela que produz a saída esperada de cada caso de teste."
+        submit: "Salvar"
+      create:
+        created: "Problema cadastrado. Agora cadastre os casos de teste."
+      update:
+        updated: "Problema atualizado."
+      destroy:
+        destroyed: "Problema excluído."
+    testcases:
+      number: "Caso %{number}"
+      input: "Entrada"
+      expected_output: "Saída esperada (gerada)"
+      remove: "Excluir"
+      create:
+        created: "Caso de teste criado com a saída gerada pela solução de referência."
+      destroy:
+        destroyed: "Caso de teste excluído."
+    submissions:
+      index:
+        title: "Submissões"
+        subtitle:
+          zero: "Nenhuma submissão."
+          one: "1 submissão."
+          other: "%{count} submissões."
+        empty: "Nenhuma equipe submeteu nada ainda."
+    clarifications:
+      collective_mark: "enviada a todas as equipes"
+      answer_label: "Resposta"
+      answer_placeholder: "Resposta objetiva, ou \"No comment\" quando responder revelaria parte da solução."
+      collective: "Enviar a todas as equipes (assunto de interesse coletivo)"
+      submit: "Responder"
+      index:
+        title: "Esclarecimentos"
+        subtitle: "Pedidos das equipes, do mais recente para o mais antigo."
+        empty: "Nenhum pedido de esclarecimento até agora."
+    answers:
+      create:
+        created: "Resposta enviada."
+        already_answered: "Este pedido já havia sido respondido."
+    balloons:
+      index:
+        title: "Balões"
+        subtitle: "Um balão por problema resolvido. Todos da mesma cor, para que ninguém deduza o desempenho alheio olhando a sala (Art. 25)."
+        deliver: "Entregar"
+        delivered: "Entregue"
+        undo: "Desfazer"
+        empty: "Nenhuma equipe resolveu um problema ainda."
+    standings:
+      show:
+        title: "Classificação"
+        subtitle: "Critérios: maior pontuação, menor tempo acumulado e, persistindo o empate, o problema mais difícil resolvido (Art. 29-33)."
+        published: "A classificação está divulgada às equipes."
+        unpublished: "A classificação está em sigilo. Divulgue apenas na cerimônia de premiação (Art. 28)."
+        publish: "Divulgar às equipes"
+        withdraw: "Voltar ao sigilo"
+    starts:
+      create:
+        started: "Competição iniciada. O relógio começa a contar agora."
+      destroy:
+        restarted: "Competição reiniciada. O relógio zerou e a rodada anterior foi apagada."
+    closures:
+      create:
+        closed: "Competição encerrada. Nenhuma submissão é aceita a partir de agora."
+    publications:
+      create:
+        published: "Classificação divulgada às equipes."
+      destroy:
+        withdrawn: "Classificação de volta ao sigilo."
+    sessions:
+      destroy:
+        destroyed: "Sessão encerrada. A equipe já pode entrar de novo."
+    deliveries:
+      create:
+        created: "Balão registrado como entregue."
+      destroy:
+        destroyed: "Entrega desfeita."
     dashboards:
       show:
         title: "Comissão"
+        contest: "Competição"
+        not_started:
+          zero: "Ainda não iniciada. Nenhum problema cadastrado — cadastre os problemas antes de abrir."
+          one: "Ainda não iniciada. 1 problema cadastrado."
+          other: "Ainda não iniciada. %{count} problemas cadastrados."
+        start: "Iniciar competição"
+        running: "Em andamento. As equipes podem submeter."
+        close: "Encerrar competição"
+        ended: "Encerrada. Nenhuma submissão é mais aceita."
+        restart: "Reiniciar competição"
+        restart_hint: "Devolve a competição ao estado anterior ao início: o relógio zera e as submissões, os pedidos de esclarecimento e os balões entregues são apagados. Problemas e casos de teste continuam. É ferramenta de ensaio — durante a competição de verdade, isso apaga a prova."
+        restart_confirm: "Reiniciar apaga TODAS as submissões, esclarecimentos e balões desta competição, sem desfazer. Os problemas e casos de teste continuam. Confirma?"
         teams:
           zero: "Nenhuma equipe cadastrada"
           one: "1 equipe cadastrada"
           other: "%{count} equipes cadastradas"
-        pending: "O cadastro de Problemas e Casos de Teste ainda não existe no sistema."
+        connected: "Conectada"
+        disconnected: "Desconectada"
+        disconnect: "Encerrar sessão"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "não pode ficar em branco"
+      taken: "já está em uso"
+      inclusion: "não está na lista"
+      required: "é obrigatório"
+  activerecord:
+    attributes:
+      problem:
+        title: "Título"
+        statement: "Enunciado"
+        reference_solution: "Solução de referência"
+        difficulty: "Nível de dificuldade"
+      testcase:
+        input: "Entrada"
+      submission:
+        code: "Código"
+      clarification:
+        question: "Pergunta"
+      answer:
+        body: "Resposta"
+    errors:
+      models:
+        problem:
+          attributes:
+            reference_solution:
+              rejected: "não passa nos casos de teste já cadastrados deste problema. A saída esperada foi gerada pela solução anterior; para trocar a solução, exclua e recadastre os casos de teste."
+        testcase:
+          attributes:
+            input:
+              reference_failed: "não pôde ser usada: a solução de referência não terminou bem nela (%{verdict})."
+        submission:
+          attributes:
+            base:
+              contest_closed: "A competição não está aberta para submissões."
+        clarification:
+          attributes:
+            base:
+              contest_closed: "A competição não está aberta para pedidos de esclarecimento."

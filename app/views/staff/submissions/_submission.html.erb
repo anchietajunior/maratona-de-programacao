@@ -1,0 +1,14 @@
+<li class="rounded-lg border border-hairline bg-surface-card p-lg">
+  <div class="flex flex-wrap items-center justify-between gap-sm">
+    <div class="flex flex-wrap items-center gap-sm">
+      <%= verdict_badge(submission) %>
+      <span class="text-body-md text-ink"><%= submission.user.name %></span>
+      <span class="text-body-sm text-muted">
+        <%= t("problems.number", position: submission.problem.position) %> · <%= submission.problem.title %>
+      </span>
+    </div>
+    <span class="font-mono text-code text-muted"><%= t("submissions.at", count: submission.elapsed_minutes) %></span>
+  </div>
+
+  <pre class="mt-base overflow-x-auto rounded-md border border-hairline bg-canvas-soft p-sm font-mono text-code text-ink"><%= submission.code %></pre>
+</li>

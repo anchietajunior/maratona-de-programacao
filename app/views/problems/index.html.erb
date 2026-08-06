@@ -1,0 +1,12 @@
+<% content_for :title, t(".title") %>
+
+<%= render "layouts/team_nav" %>
+
+<h1 class="text-display-md"><%= t(".title") %></h1>
+<p class="mt-sm max-w-prose text-body-md text-body"><%= t(".subtitle") %></p>
+
+<ul class="mt-xl grid gap-base sm:grid-cols-2">
+  <% @problems.each do |problem| %>
+    <%= render "problems/problem", problem: problem %>
+  <% end %>
+</ul>

@@ -1,8 +1,6 @@
 # Generated from app/models/submission.rb with RBS::Inline
 
 class Submission < ApplicationRecord
-  include Judgeable
-
   VERDICTS: untyped
 
   # Veredicto nulo é Submissão ainda não julgada.
@@ -12,4 +10,19 @@ class Submission < ApplicationRecord
   # Único Veredicto que pontua (Art. 30).
   # : () -> bool
   def accepted?: () -> bool
+
+  # Submissão julgada que não foi aceita — é o que gera Penalidade (Art. 31).
+  # : () -> bool
+  def incorrect?: () -> bool
+
+  # Minutos desde o início real da Competição até esta Submissão (Art. 31, ADR-0008).
+  # : () -> Integer
+  def elapsed_minutes: () -> Integer
+
+  private
+
+  # Fora da janela não se submete: nem antes do início, nem depois do encerramento
+  # (Art. 20). Dentro dela não há limite nenhum, nem depois do AC (Art. 27).
+  # : () -> void
+  def contest_must_be_open: () -> void
 end

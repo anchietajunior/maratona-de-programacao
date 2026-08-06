@@ -1,0 +1,24 @@
+<div class="overflow-x-auto rounded-lg border border-hairline bg-surface-card">
+  <table class="w-full border-collapse text-body-sm">
+    <thead class="border-b border-hairline text-caption-uppercase uppercase text-muted">
+      <tr>
+        <th class="px-base py-sm text-left"><%= t("standings.position") %></th>
+        <th class="px-base py-sm text-left"><%= t("standings.team") %></th>
+        <th class="px-base py-sm text-right"><%= t("standings.score") %></th>
+        <th class="px-base py-sm text-right"><%= t("standings.total_time") %></th>
+        <th class="px-base py-sm text-right"><%= t("standings.solved") %></th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-hairline">
+      <% teams.each_with_index do |team, index| %>
+        <tr>
+          <td class="px-base py-sm font-mono text-code text-muted"><%= index + 1 %></td>
+          <td class="px-base py-sm text-ink"><%= team.name %></td>
+          <td class="px-base py-sm text-right text-ink"><%= team.score %></td>
+          <td class="px-base py-sm text-right text-body"><%= in_minutes(team.total_time) %></td>
+          <td class="px-base py-sm text-right text-body"><%= team.solved_problems.size %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

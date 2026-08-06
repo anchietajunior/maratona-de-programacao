@@ -1,0 +1,64 @@
+# Generated from app/models/user/scoreable.rb with RBS::Inline
+
+# Pontuação e Tempo Acumulado da Equipe. Tudo aqui é derivado do conjunto de Submissões a
+# cada chamada — nada é acumulado em coluna (ADR-0010).
+module User::Scoreable
+  extend ActiveSupport::Concern
+
+  # Minutos somados ao Tempo Acumulado por tentativa errada (Art. 31-III).
+  PENALTY: ::Integer
+
+  # A Classificação, do primeiro ao último (Art. 28-33).
+  # : () -> Array[User]
+  def standings: () -> Array[User]
+
+  # A primeira Submissão aceita de cada Problema. O Art. 27 permite submeter depois do AC,
+  # e essas Submissões seguintes não pontuam nem penalizam de novo.
+  # : () -> Array[Submission]
+  def solutions: () -> Array[Submission]
+
+  # Os Problemas resolvidos, na ordem em que aparecem na Competição.
+  # : () -> Array[Problem]
+  def solved_problems: () -> Array[Problem]
+
+  # Só AC pontua, e vale o Nível de Dificuldade cheio (Art. 29, 30).
+  # : () -> Integer
+  def score: () -> Integer
+
+  # Para cada Problema resolvido, o tempo até o AC mais a Penalidade das tentativas que o
+  # precederam (Art. 31).
+  # : () -> Integer
+  def total_time: () -> Integer
+
+  # : (Problem) -> bool
+  def solved?: (Problem) -> bool
+
+  # : (Problem) -> Array[Submission]
+  def submissions_on: (Problem) -> Array[Submission]
+
+  # : (Problem) -> Integer
+  def attempts_on: (Problem) -> Integer
+
+  # A ordem da Classificação: maior Pontuação, menor Tempo Acumulado e, persistindo o
+  # empate, o Problema mais difícil resolvido — o mais cedo entre eles (Art. 33). A
+  # identificação fecha a chave para que empate absoluto não saia em ordem sorteada.
+  # : () -> Array[untyped]
+  def standing_key: () -> Array[untyped]
+
+  private
+
+  # Dez minutos por tentativa errada **anterior** ao AC. As posteriores não contam: a
+  # Penalidade paga o caminho até a solução, e esse caminho terminou.
+  # : (Submission) -> Integer
+  def penalty_for: (Submission) -> Integer
+
+  # A Submissão que resolveu o Problema mais difícil; entre iguais, a mais antiga.
+  # : () -> Submission?
+  def hardest_solution: () -> Submission?
+
+  # : () -> Integer
+  def hardest_points: () -> Integer
+
+  # : () -> Float
+  def hardest_time: () -> Float
+end

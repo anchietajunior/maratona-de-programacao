@@ -1,0 +1,7 @@
+# De interesse coletivo: vai ao mural de todas as Equipes (Art. 36).
+turing_easy:
+  clarification: turing_easy
+  user: technical_committee
+  body: Pode. O enunciado vale para qualquer inteiro.
+  collective: true
+  created_at: <%= 20.minutes.ago %>

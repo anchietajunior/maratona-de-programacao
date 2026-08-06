@@ -1,0 +1,17 @@
+<%# Quem perguntou nunca aparece: no mural coletivo o assunto é público, a autoria não. %>
+<li class="rounded-lg border border-hairline bg-surface-card p-lg">
+  <p class="text-caption-uppercase uppercase text-muted">
+    <%= t("problems.number", position: clarification.problem.position) %> · <%= clarification.problem.title %>
+  </p>
+
+  <p class="mt-sm text-body-md text-ink"><%= clarification.question %></p>
+
+  <% if clarification.answered? %>
+    <div class="mt-base border-t border-hairline pt-base">
+      <p class="text-caption-uppercase uppercase text-muted"><%= t("clarifications.answer") %></p>
+      <p class="mt-xs text-body-md text-body"><%= clarification.answer.body %></p>
+    </div>
+  <% else %>
+    <p class="mt-base text-body-sm text-muted"><%= t("clarifications.waiting") %></p>
+  <% end %>
+</li>

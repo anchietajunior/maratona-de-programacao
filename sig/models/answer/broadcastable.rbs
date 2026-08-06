@@ -1,0 +1,8 @@
+# Generated from app/models/answer/broadcastable.rb with RBS::Inline
+
+# A Resposta chega a quem perguntou e à fila da Comissão. Sendo de interesse coletivo, vai
+# também ao mural que todas as Equipes acompanham — e só ele é compartilhado, porque nada
+# do que trafega nele é de uma Equipe (Art. 34, 36).
+module Answer::Broadcastable
+  extend ActiveSupport::Concern
+end

@@ -1,0 +1,5 @@
+# Generated from app/models/testcase.rb with RBS::Inline
+
+class Testcase < ApplicationRecord
+  include Generated
+end

@@ -1,0 +1,18 @@
+<% content_for :title, @problem.title %>
+
+<%= render "layouts/team_nav" %>
+
+<header>
+  <p class="text-caption-uppercase uppercase text-muted"><%= t("problems.number", position: @problem.position) %></p>
+  <h1 class="mt-xs text-display-md"><%= @problem.title %></h1>
+  <div class="mt-sm flex flex-wrap items-center gap-xs">
+    <%= difficulty_badge(@problem) %>
+    <span class="text-body-sm text-muted"><%= t("problems.points", count: @problem.points) %></span>
+  </div>
+</header>
+
+<article class="statement mt-xl max-w-prose"><%= markdown(@problem.statement) %></article>
+
+<%= render "problems/show/submit", problem: @problem %>
+<%= render "problems/show/history", submissions: @submissions %>
+<%= render "problems/show/ask", problem: @problem %>

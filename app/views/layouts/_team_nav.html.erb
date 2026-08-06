@@ -1,0 +1,23 @@
+<%# A Equipe assina o próprio fluxo e o mural coletivo — nunca o de outra Equipe (Art. 34). %>
+<%= turbo_stream_from Current.user %>
+<%= turbo_stream_from :announcements %>
+
+<nav class="mb-xl flex flex-wrap items-center justify-between gap-base border-b border-hairline pb-base">
+  <div class="flex flex-wrap items-center gap-md">
+    <%= link_to t("nav.scoreboard"), scoreboard_path, class: "text-nav-link text-ink" %>
+    <% if contest.started? %>
+      <%= link_to t("nav.problems"), problems_path, class: "text-nav-link text-ink" %>
+      <%= link_to t("nav.clarifications"), clarifications_path, class: "text-nav-link text-ink" %>
+    <% end %>
+    <% if contest.published? %>
+      <%= link_to t("nav.standings"), standings_path, class: "text-nav-link text-ink" %>
+    <% end %>
+  </div>
+
+  <div class="flex items-center gap-base">
+    <%= render "layouts/clock" %>
+    <span class="text-body-sm text-muted"><%= Current.user.name %></span>
+    <%= button_to t("sessions.destroy.submit"), session_path, method: :delete,
+          class: "cursor-pointer rounded-md border border-hairline-strong bg-surface-card px-base py-xs text-button text-ink" %>
+  </div>
+</nav>

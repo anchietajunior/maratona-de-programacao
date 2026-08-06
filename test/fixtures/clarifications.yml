@@ -1,0 +1,13 @@
+# turing perguntou sobre o fácil e foi respondida em interesse coletivo; lovelace perguntou
+# sobre o difícil e ainda espera.
+turing_easy:
+  user: turing
+  problem: easy_sum
+  question: A entrada pode trazer números negativos?
+  created_at: <%= 25.minutes.ago %>
+
+lovelace_hard:
+  user: lovelace
+  problem: hard_fibonacci
+  question: F(0) conta como termo da sequência?
+  created_at: <%= 15.minutes.ago %>
