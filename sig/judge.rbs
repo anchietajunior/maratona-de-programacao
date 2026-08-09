@@ -18,6 +18,11 @@ class Judge
 
   OOM_EXIT: ::Integer
 
+  # What the container runs: compile once, then one process per case. A frozen literal on
+  # purpose — the limits cross into the container as environment variables, so nothing this
+  # process holds is ever spliced into a shell.
+  SCRIPT: untyped
+
   # Raised when code meant to produce expected output does not finish cleanly.
   class Failed < StandardError
     attr_reader verdict: String
@@ -67,10 +72,6 @@ class Judge
   # Executes the submission in a throwaway container.
   # : (String) -> [ String, String, Process::Status ]
   def run_container: (String) -> [ String, String, Process::Status ]
-
-  # Builds the shell script the container runs: compile once, then one process per case.
-  # : () -> String
-  def container_script: () -> String
 
   # Reads the container output and returns the verdict of the first case that is not AC.
   # : (String, Array[Hash[Symbol, String]]) -> Result
