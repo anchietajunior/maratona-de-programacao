@@ -11,6 +11,13 @@ class ProblemsControllerTest < ActionDispatch::IntegrationTest
     assert_select "li", text: /Difícil/
   end
 
+  # A Equipe está com pressa: o cartão inteiro abre o Problema, não só o título.
+  test "the whole card of a problem is the link to it" do
+    get problems_path
+
+    assert_select "li a[href=?]", problem_path(problems(:medium_primes)), text: /Médio/
+  end
+
   test "show renders the statement as markdown" do
     get problem_path(problems(:easy_sum))
 

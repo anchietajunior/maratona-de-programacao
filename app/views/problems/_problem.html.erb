@@ -1,19 +1,20 @@
-<li class="rounded-lg border border-hairline bg-surface-card p-lg">
-  <%= link_to problem_path(problem), class: "block" do %>
+<li>
+  <%= link_to problem_path(problem),
+        class: "block rounded-lg border border-hairline bg-surface-card p-lg transition-colors hover:border-hairline-strong focus-visible:outline-primary" do %>
     <p class="text-caption-uppercase uppercase text-muted"><%= t("problems.number", position: problem.position) %></p>
     <h2 class="mt-xs text-title-md text-ink"><%= problem.title %></h2>
+
+    <div class="mt-sm flex flex-wrap items-center gap-xs">
+      <%= difficulty_badge(problem) %>
+      <span class="text-body-sm text-muted"><%= t("problems.points", count: problem.points) %></span>
+    </div>
+
+    <p class="mt-sm text-body-sm <%= Current.user.solved?(problem) ? "text-success" : "text-muted" %>">
+      <% if Current.user.solved?(problem) %>
+        <%= t("problems.solved") %>
+      <% else %>
+        <%= t("problems.attempts", count: Current.user.attempts_on(problem)) %>
+      <% end %>
+    </p>
   <% end %>
-
-  <div class="mt-sm flex flex-wrap items-center gap-xs">
-    <%= difficulty_badge(problem) %>
-    <span class="text-body-sm text-muted"><%= t("problems.points", count: problem.points) %></span>
-  </div>
-
-  <p class="mt-sm text-body-sm <%= Current.user.solved?(problem) ? "text-success" : "text-muted" %>">
-    <% if Current.user.solved?(problem) %>
-      <%= t("problems.solved") %>
-    <% else %>
-      <%= t("problems.attempts", count: Current.user.attempts_on(problem)) %>
-    <% end %>
-  </p>
 </li>
