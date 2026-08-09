@@ -9,7 +9,9 @@ module ApplicationHelper
   # O Enunciado é Markdown escrito pela Comissão Técnica, renderizado por kramdown — Ruby
   # puro, sem extensão nativa para compilar na máquina do laboratório (ADR-0005).
   def markdown(text)
-    sanitize Kramdown::Document.new(text.to_s).to_html, tags: STATEMENT_TAGS
+    fenced = text.to_s.gsub(/^ {0,3}```/, "~~~")
+
+    sanitize Kramdown::Document.new(fenced).to_html, tags: STATEMENT_TAGS
   end
 
   # Minutos são a unidade do Tempo Acumulado (Art. 31).

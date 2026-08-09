@@ -67,8 +67,14 @@ pt-BR:
       subtitle: "Resolva na ordem que quiser. O nível de dificuldade define quantos pontos o problema vale."
     show:
       submit_title: "Submeter solução"
-      submit_hint: "Cole aqui o código Python 3 pronto. Você pode submeter quantas vezes quiser enquanto a competição estiver aberta."
+      submit_hint: "Cole aqui o código Python 3 pronto. Seu programa sempre lê a entrada com input() e escreve a resposta com print() — nada de pedir dados ao usuário, imprimir mensagens ou desenhar menus: só a saída que o enunciado pede. Você pode submeter quantas vezes quiser enquanto a competição estiver aberta."
       code: "Código"
+      code_placeholder: |-
+        # Leia a entrada com input() e escreva a resposta com print().
+        # Não imprima nada além do que o enunciado pede.
+
+        linha = input()
+        print(linha)
       submit: "Submeter"
       closed: "A competição não está aberta para submissões neste momento."
       history: "Suas submissões"
@@ -167,7 +173,40 @@ pt-BR:
         title_field: "Título"
         difficulty: "Nível de dificuldade"
         statement: "Enunciado"
-        statement_hint: "Markdown. Especifique exatamente o formato de entrada e de saída."
+        statement_hint: "Markdown. Especifique exatamente o formato de entrada e de saída, e termine sempre pela seção \"Como ler a entrada\", com as linhas de Python que capturam a entrada deste problema."
+        statement_template: |-
+          Descreva o problema em uma ou duas frases.
+
+          ## Entrada
+
+          Diga exatamente o que chega pela entrada padrão.
+
+          ## Saída
+
+          Diga exatamente o que deve ser impresso.
+
+          ## Exemplo
+
+          Para a entrada
+
+          ```
+          1 2 3
+          ```
+
+          a saída é
+
+          ```
+          6
+          ```
+
+          ## Como ler a entrada
+
+          A entrada chega pronta pela entrada padrão. Não peça nada ao usuário.
+
+          ```
+          numeros = input().split()          # ["1", "2", "3"]
+          numeros = [ int(n) for n in numeros ]
+          ```
         reference_solution: "Solução de referência"
         reference_solution_hint: "Python 3. É ela que produz a saída esperada de cada caso de teste."
         submit: "Salvar"

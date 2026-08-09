@@ -107,9 +107,17 @@
    utilitários, então o estilo dessas tags mora aqui — sempre nos tokens do design.md. */
 @layer components {
   .statement {
-    color: var(--color-body);
+    background: var(--color-surface-card);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    color: var(--color-ink);
     font-size: var(--text-body-md);
-    line-height: 1.5;
+    line-height: 1.6;
+  }
+
+  .statement > :last-child {
+    margin-bottom: 0;
   }
 
   .statement h1,
@@ -141,9 +149,15 @@
     font-size: var(--text-code);
   }
 
+  .statement h1:first-child,
+  .statement h2:first-child,
+  .statement h3:first-child {
+    margin-top: 0;
+  }
+
   .statement pre {
-    background: var(--color-canvas-soft);
-    border: 1px solid var(--color-hairline);
+    background: var(--color-canvas);
+    border: 1px solid var(--color-hairline-strong);
     border-radius: var(--radius-md);
     padding: var(--spacing-base);
     margin-bottom: var(--spacing-base);
@@ -161,5 +175,78 @@
     border: 1px solid var(--color-hairline);
     padding: var(--spacing-xs);
     text-align: left;
+  }
+
+  /* O campo de código são duas camadas empilhadas: o <pre> pintado embaixo e o <textarea>
+     transparente em cima. As duas precisam da mesma métrica ou o cursor sai do lugar. */
+  .code-editor {
+    position: relative;
+    border: 1px solid var(--color-hairline-strong);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-card);
+  }
+
+  .code-editor:focus-within {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .code-editor pre,
+  .code-editor textarea {
+    margin: 0;
+    padding: var(--spacing-base);
+    font-family: var(--font-mono);
+    font-size: var(--text-code);
+    line-height: var(--text-code--line-height);
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    tab-size: 4;
+  }
+
+  .code-editor pre {
+    min-height: 24em;
+    color: var(--color-ink);
+  }
+
+  .code-editor textarea {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    border: 0;
+    background: transparent;
+    color: var(--color-ink);
+    overflow: auto;
+  }
+
+  .code-editor textarea:focus {
+    outline: none;
+  }
+
+  .code-editor textarea::placeholder {
+    color: var(--color-muted-soft);
+  }
+
+  /* Sem JavaScript o texto continua visível: só o realce se perde. */
+  .code-editor[data-connected] textarea {
+    color: transparent;
+    caret-color: var(--color-ink);
+  }
+
+  .code-editor .tok-keyword {
+    color: var(--color-error);
+  }
+
+  .code-editor .tok-string {
+    color: var(--color-success);
+  }
+
+  .code-editor .tok-comment {
+    color: var(--color-muted);
+  }
+
+  .code-editor .tok-builtin {
+    font-weight: 600;
   }
 }

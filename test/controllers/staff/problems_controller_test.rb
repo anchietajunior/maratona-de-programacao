@@ -26,6 +26,14 @@ class Staff::ProblemsControllerTest < ActionDispatch::IntegrationTest
     assert_select "textarea[name=?]", "problem[reference_solution]"
   end
 
+  # Toda Equipe precisa ver como capturar a entrada daquele Problema, então o Enunciado já
+  # nasce com a seção.
+  test "new opens the statement on the template that ends with how to read the input" do
+    get new_staff_problem_path
+
+    assert_select "textarea[name=?]", "problem[statement]", text: /## Como ler a entrada.*input\(\)/m
+  end
+
   test "staff registers a problem and its position comes for free" do
     assert_difference -> { contests(:maratona).problems.count }, +1 do
       post staff_problems_path, params: { problem: {

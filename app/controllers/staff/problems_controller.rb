@@ -12,7 +12,7 @@ class Staff::ProblemsController < Staff::BaseController
   end
 
   def new
-    @problem = contest.problems.new
+    @problem = contest.problems.new statement: t("staff.problems.form.statement_template")
   end
 
   def create

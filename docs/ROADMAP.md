@@ -112,8 +112,13 @@ testes vão usar.
       passo do `bin/ci`
   - A senha sai de `SEED_PASSWORD`, com `12345` de padrão — na véspera do evento as
     credenciais reais entram por aí, sem editar o arquivo
-  - Sem Problemas nem Casos de Teste: pelo ADR-0003 a saída esperada é **gerada** rodando a
-    Solução de Referência, o que exige Docker. Quem cadastra é a tela da Fase 3
+  - ~~Sem Problemas nem Casos de Teste~~ — **mudou.** Os Problemas passaram a morar nos
+    seeds, começando pelo Palíndromo na posição 1. Só a *entrada* de cada Caso de Teste é
+    escrita ali; a saída esperada continua sendo gerada pela Solução de Referência
+    (ADR-0003), o que faz o seed exigir Docker — inclusive no `db:seed:replant` do
+    `bin/ci`. O custo é aceitável porque os testes já exigiam, mas na máquina do
+    laboratório a imagem `python:3.12-slim` vira pré-requisito para *seedar*, não só para
+    julgar (ver 10.3)
 
 ---
 

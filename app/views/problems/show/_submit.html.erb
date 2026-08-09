@@ -2,12 +2,16 @@
   <h2 class="text-display-sm"><%= t("problems.show.submit_title") %></h2>
 
   <% if contest.open? %>
-    <p class="mt-xs max-w-prose text-body-sm text-muted"><%= t("problems.show.submit_hint") %></p>
+    <p class="mt-xs max-w-prose text-body-md text-body"><%= t("problems.show.submit_hint") %></p>
 
     <%= form_with model: [ problem, Submission.new ], class: "mt-base" do |form| %>
       <%= form.label :code, t("problems.show.code"), class: "sr-only" %>
-      <%= form.text_area :code, rows: 14, required: true, spellcheck: false,
-            class: "block w-full rounded-lg border border-hairline-strong bg-surface-card p-base font-mono text-code text-ink focus:outline-primary" %>
+      <div class="code-editor" data-controller="code-editor">
+        <pre data-code-editor-target="output" aria-hidden="true"></pre>
+        <%= form.text_area :code, required: true, spellcheck: false,
+              placeholder: t("problems.show.code_placeholder"),
+              data: { code_editor_target: "input", action: "input->code-editor#highlight" } %>
+      </div>
       <%= form.submit t("problems.show.submit"),
             class: "mt-base h-[40px] cursor-pointer rounded-md bg-primary px-md text-button text-on-primary" %>
     <% end %>
