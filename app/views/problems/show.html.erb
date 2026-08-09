@@ -11,7 +11,7 @@
   </div>
 </header>
 
-<article class="statement mt-xl max-w-prose"><%= markdown(@problem.statement) %></article>
+<article class="statement mt-xl"><%= markdown(@problem.statement) %></article>
 
 <%= render "problems/show/submit", problem: @problem %>
 <%= render "problems/show/history", submissions: @submissions %>
