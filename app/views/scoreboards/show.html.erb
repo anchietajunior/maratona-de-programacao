@@ -25,9 +25,10 @@
       </thead>
       <tbody class="divide-y divide-hairline">
         <% @problems.each do |problem| %>
-          <tr>
+          <tr class="relative transition-colors hover:bg-canvas">
             <td class="px-base py-sm">
-              <%= link_to problem.title, problem_path(problem), class: "text-ink" %>
+              <%# O ::after cobre a linha inteira, então a linha toda leva ao Problema. %>
+              <%= link_to problem.title, problem_path(problem), class: "text-ink after:absolute after:inset-0" %>
             </td>
             <td class="px-base py-sm text-body"><%= t("problems.difficulties.#{problem.difficulty}") %></td>
             <td class="px-base py-sm text-right text-body"><%= Current.user.attempts_on(problem) %></td>
