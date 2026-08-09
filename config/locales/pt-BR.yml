@@ -267,7 +267,7 @@ pt-BR:
       create:
         started: "Competição iniciada. O relógio começa a contar agora."
       destroy:
-        restarted: "Competição reiniciada. O relógio zerou e a rodada anterior foi apagada."
+        restarted: "Reinício em andamento. Em instantes o relógio zera e a rodada anterior é apagada — atualize esta página para conferir."
     closures:
       create:
         closed: "Competição encerrada. Nenhuma submissão é aceita a partir de agora."

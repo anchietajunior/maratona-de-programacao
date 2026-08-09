@@ -14,6 +14,15 @@ class Contest < ApplicationRecord
   # : () -> void
   def finish: () -> void
 
+  # : () -> void
+  def restart_later: () -> void
+
+  # Devolve a Competição ao estado anterior ao início e apaga o que a rodada produziu.
+  # Apagar não é opcional: o Tempo Acumulado é contado do marco zero, e Submissão anterior
+  # a um marco zero novo sairia com tempo negativo. Problemas e Casos de Teste ficam.
+  # : () -> void
+  def restart_now: () -> void
+
   # A Classificação só fica visível às Equipes depois da premiação (Art. 28).
   # : () -> void
   def publish: () -> void

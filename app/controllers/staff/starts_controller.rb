@@ -7,7 +7,7 @@ class Staff::StartsController < Staff::BaseController
 
   # Reiniciar é desfazer o início: o marco zero deixa de existir e a rodada vai junto.
   def destroy
-    contest.restart
+    contest.restart_later
     redirect_to staff_root_url, notice: t(".restarted"), status: :see_other
   end
 end

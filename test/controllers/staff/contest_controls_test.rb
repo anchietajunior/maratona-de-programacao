@@ -3,6 +3,8 @@ require "test_helper"
 # Iniciar, encerrar e divulgar são três mudanças de estado da Competição, cada uma com o
 # seu recurso.
 class Staff::ContestControlsTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
+
   setup { sign_in_as users(:technical_committee) }
 
   test "starting the contest sets the zero mark" do
@@ -23,10 +25,20 @@ class Staff::ContestControlsTest < ActionDispatch::IntegrationTest
 
   # Reiniciar é ferramenta de ensaio: sem apagar a rodada, as Submissões antigas ficariam
   # com instante anterior ao novo marco zero e o Tempo Acumulado sairia negativo.
+  # Apagar a rodada inteira mexe em três tabelas e dispara broadcast por registro: o
+  # pedido devolve a tela na hora e o trabalho fica com o worker.
+  test "restarting hands the work to a background job" do
+    assert_enqueued_with job: Contest::RestartJob do
+      delete staff_start_path
+    end
+
+    assert contests(:maratona).reload.started?
+  end
+
   test "restarting clears the clock and the round it produced" do
     Delivery.create! user: users(:turing), problem: problems(:easy_sum), staff: users(:technical_committee)
 
-    delete staff_start_path
+    perform_enqueued_jobs { delete staff_start_path }
 
     assert_not contests(:maratona).reload.started?
     assert_empty Submission.all
@@ -36,14 +48,14 @@ class Staff::ContestControlsTest < ActionDispatch::IntegrationTest
   end
 
   test "restarting keeps the problems and their testcases" do
-    delete staff_start_path
+    perform_enqueued_jobs { delete staff_start_path }
 
     assert_equal 3, contests(:maratona).reload.problems.count
     assert_equal 2, problems(:easy_sum).testcases.count
   end
 
   test "a restarted contest can be started again from zero" do
-    delete staff_start_path
+    perform_enqueued_jobs { delete staff_start_path }
     post staff_start_path
 
     assert contests(:maratona).reload.open?

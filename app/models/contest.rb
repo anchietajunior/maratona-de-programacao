@@ -20,11 +20,16 @@ class Contest < ApplicationRecord
     update! ended_at: Time.current if open?
   end
 
+  #: () -> void
+  def restart_later
+    Contest::RestartJob.perform_later self
+  end
+
   # Devolve a Competição ao estado anterior ao início e apaga o que a rodada produziu.
   # Apagar não é opcional: o Tempo Acumulado é contado do marco zero, e Submissão anterior
   # a um marco zero novo sairia com tempo negativo. Problemas e Casos de Teste ficam.
   #: () -> void
-  def restart
+  def restart_now
     transaction do
       Submission.where(problem: problems).destroy_all
       Clarification.where(problem: problems).destroy_all

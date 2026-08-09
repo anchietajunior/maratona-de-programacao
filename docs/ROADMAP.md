@@ -305,7 +305,9 @@ Nada aqui é código. É o que costuma explodir por ficar para a véspera.
 
 > **Ferramenta de ensaio:** o painel tem **Reiniciar competição** (`DELETE /staff/start`),
 > que zera o relógio e apaga a rodada — Submissões, Esclarecimentos e Balões — mantendo
-> Problemas e Casos de Teste. Apagar não é opção: o Tempo Acumulado conta do marco zero, e
+> Problemas e Casos de Teste. O trabalho sai em segundo plano (`Contest::RestartJob`), então
+> o botão só vale com o worker de pé: `bin/dev` sobe um, `bin/jobs` sobe sozinho.
+> Apagar não é opção: o Tempo Acumulado conta do marco zero, e
 > Submissão anterior a um marco zero novo sairia com tempo negativo. É o que permite rodar
 > 10.3, 10.4 e 10.6 mais de uma vez. **Na noite do evento esse botão apaga a prova** — vale
 > decidir antes se ele fica visível em produção.

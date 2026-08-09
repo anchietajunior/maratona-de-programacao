@@ -1,0 +1,6 @@
+# Generated from app/jobs/contest/restart_job.rb with RBS::Inline
+
+class Contest::RestartJob < ApplicationJob
+  # : (Contest) -> void
+  def perform: (Contest) -> void
+end
