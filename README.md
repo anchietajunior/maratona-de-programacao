@@ -7,9 +7,9 @@ No macOS e no Linux, use `bin/setup` e depois `bin/dev`.
 
 ## Rodando no Windows
 
-`bin/dev` é um script `sh` e não roda no PowerShell/cmd. Além disso, o Windows ignora a
-linha `#!/usr/bin/env ruby` dos scripts em `bin/`, então cada processo precisa ser chamado
-com `ruby` na frente — é exatamente isso que o `Procfile.dev.windows` faz.
+Nada de `bin/` no Windows: `bin/dev` é um script `sh`, e o PowerShell/cmd ignora a linha
+`#!/usr/bin/env ruby` do resto dos binstubs. O `Procfile.dev.windows` chama tudo por
+`bundle exec`, sem passar por `bin/`.
 
 ### Pré-requisitos
 
@@ -23,8 +23,9 @@ com `ruby` na frente — é exatamente isso que o `Procfile.dev.windows` faz.
 ### Preparando
 
 ```powershell
+gem install foreman
 bundle install
-ruby bin/setup --skip-server
+bundle exec rails db:prepare
 ```
 
 ### Rodando
@@ -33,14 +34,19 @@ ruby bin/setup --skip-server
 foreman start -f Procfile.dev.windows
 ```
 
-A aplicação sobe em <http://localhost:3001>. Se o `foreman` não estiver instalado:
+A aplicação sobe em <http://localhost:3001>.
 
-```powershell
-gem install foreman
-```
+Se o `foreman` der problema, abra três terminais e rode uma linha do
+`Procfile.dev.windows` em cada um — é o mesmo efeito.
 
 ### Testes
 
 ```powershell
-ruby bin/rails test
+bundle exec rails test
 ```
+
+### Por que a fila roda em modo `async`
+
+O supervisor do Solid Queue cria os workers com `fork`, que não existe no Ruby do Windows.
+O `Procfile.dev.windows` sobe o supervisor em `mode: :async`, que roda workers e
+dispatchers em threads no mesmo processo. Para ~15 equipes é folgado.
