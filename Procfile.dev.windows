@@ -1,3 +1,3 @@
-web: bundle exec rails server -p 3001
+web: bundle exec rails server -p 3001 -b 0.0.0.0
 css: bundle exec rails tailwindcss:watch
 jobs: bundle exec rails runner "SolidQueue::Supervisor.start(mode: :async)"
