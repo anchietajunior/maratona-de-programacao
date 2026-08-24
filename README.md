@@ -13,7 +13,7 @@ Nada de `bin/` no Windows: `bin/dev` é um script `sh`, e o PowerShell/cmd ignor
 
 ### Pré-requisitos
 
-- **Ruby 4.0.3** via [RubyInstaller](https://rubyinstaller.org/) (escolha a versão
+- **Ruby 4.0.6** via [RubyInstaller](https://rubyinstaller.org/) (escolha a versão
   *with Devkit*, necessária para compilar o `mysql2`).
 - **MySQL** rodando em `127.0.0.1:3306`, usuário `root`, senha `12345`
   (use `DB_HOST` para apontar para outro host).

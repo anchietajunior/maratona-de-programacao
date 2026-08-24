@@ -32,7 +32,7 @@ needs to scale; it needs to not fail on the night.
 **Runs entirely offline** on a lab machine (see ADR-0005). No CDN, no cloud, no internet
 dependency at run time.
 
-Stack: Rails 8.1 on Ruby 4.0.3, MySQL, Hotwire (Turbo + Stimulus via importmap, no Node
+Stack: Rails 8.1 on Ruby 4.0.6, MySQL, Hotwire (Turbo + Stimulus via importmap, no Node
 build step), Tailwind, Propshaft, and the Solid trifecta (cache, queue, cable) on the
 database. Submitted code runs in throwaway Docker containers, never in the web process.
 
@@ -183,13 +183,13 @@ do not remove it.
 
 ## Commands
 
-**Always run Ruby through mise.** The toolchain is pinned to Ruby 4.0.3 by `.ruby-version`
+**Always run Ruby through mise.** The toolchain is pinned to Ruby 4.0.6 by `.ruby-version`
 and resolved by mise — never invoke a system Ruby or another version manager. In an
 activated shell `ruby`, `bundle` and `bin/*` already resolve correctly; from a
 non-activated context, prefix with `mise exec --`:
 
 ```bash
-mise current              # Confirm: should report ruby 4.0.3
+mise current              # Confirm: should report ruby 4.0.6
 mise exec -- bin/rails test
 ```
 
