@@ -79,8 +79,8 @@ class Judge
 
     Dir.mktmpdir("judge") do |dir|
       prepare(dir, code, cases)
-      run_container(dir)
-      collect(dir, cases)
+      _, stderr, _ = run_container(dir)
+      collect(dir, cases, stderr)
     end
   end
 
@@ -90,8 +90,8 @@ class Judge
   def run(code, input)
     Dir.mktmpdir("judge") do |dir|
       prepare(dir, code, [ { input: input } ])
-      run_container(dir)
-      output(dir)
+      _, stderr, _ = run_container(dir)
+      output(dir, stderr)
     end
   end
 
@@ -131,8 +131,11 @@ class Judge
   end
 
   # Reads the container output and returns the verdict of the first case that is not AC.
-  #: (String, Array[Hash[Symbol, String]]) -> Result
-  def collect(dir, cases)
+  # The docker stderr goes into the message when the container left no trace: without it,
+  # an infrastructure failure (mount denied, daemon down) is indistinguishable from a
+  # crashing submission.
+  #: (String, Array[Hash[Symbol, String]], String) -> Result
+  def collect(dir, cases, docker_stderr)
     ce = "#{dir}/out/ce.txt"
     return Result.new(verdict: "CE", message: File.read(ce)) if File.exist?(ce) && !File.read(ce).empty?
 
@@ -142,7 +145,7 @@ class Judge
 
       unless File.exist?(status_file)
         return Result.new(verdict: "RE", failed_case: i + 1,
-                          message: "container exited before this case")
+                          message: no_trace_message(docker_stderr, "container exited before this case"))
       end
 
       status = File.read(status_file).strip.to_i
@@ -168,6 +171,12 @@ class Judge
     end
   end
 
+  # Prefers what docker printed over a generic message when the container left no files.
+  #: (String, String) -> String
+  def no_trace_message(docker_stderr, fallback)
+    docker_stderr.strip.empty? ? fallback : docker_stderr.strip
+  end
+
   # Compares actual output against expected byte by byte, distinguishing WA from PE.
   # Comparison is on bytes because the expected output arrives from a binary column and
   # Ruby answers that a BINARY string and a UTF-8 string with the same bytes differ.
@@ -188,13 +197,15 @@ class Judge
 
   # Reads the single case's output, refusing anything that did not exit cleanly. Read as
   # bytes: what is stored must be what the program printed, down to the byte (ADR-0003).
-  #: (String) -> String
-  def output(dir)
+  #: (String, String) -> String
+  def output(dir, docker_stderr)
     ce = "#{dir}/out/ce.txt"
     raise Failed.new("CE", File.read(ce)) if File.exist?(ce) && !File.read(ce).empty?
 
     status_file = "#{dir}/out/001.code"
-    raise Failed.new("RE", "container exited before running") unless File.exist?(status_file)
+    unless File.exist?(status_file)
+      raise Failed.new("RE", no_trace_message(docker_stderr, "container exited before running"))
+    end
 
     status = File.read(status_file).strip.to_i
     unless status.zero?

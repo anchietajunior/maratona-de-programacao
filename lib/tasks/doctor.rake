@@ -1,4 +1,6 @@
 require "open3"
+require "tmpdir"
+require "fileutils"
 
 namespace :maratona do
   desc "Diagnoses the judging pipeline: queue processes, failed jobs, Docker, image, a real judge run and the cable database"
@@ -29,6 +31,24 @@ namespace :maratona do
 
     _, _, status = Open3.capture3("docker", "image", "inspect", Judge::IMAGE)
     report.call "Image #{Judge::IMAGE}", status.success?, status.success? ? nil : "run: docker pull #{Judge::IMAGE}"
+
+    _, error, status = Open3.capture3("docker", "run", "--rm", Judge::IMAGE, "echo", "ok")
+    report.call "Container runs (no mounts)", status.success?, status.success? ? nil : error.strip.lines.last
+
+    Dir.mktmpdir("doctor") do |dir|
+      out = "#{dir}/out"
+      FileUtils.mkdir_p(out)
+      FileUtils.chmod(0o777, out)
+      _, error, status = Open3.capture3("docker", "run", "--rm", "--user", "65534:65534",
+        "-v", "#{out}:/out", Judge::IMAGE, "sh", "-c", "echo ok > /out/probe.txt")
+      written = File.exist?("#{out}/probe.txt")
+      detail = if !status.success?
+        error.strip.lines.last
+      elsif !written
+        "container wrote but the file never appeared on the host"
+      end
+      report.call "Bind mount write as user 65534", status.success? && written, detail
+    end
 
     begin
       output = Judge.new.run("print('ok')", "")

@@ -74,12 +74,19 @@ class Judge
   def run_container: (String) -> [ String, String, Process::Status ]
 
   # Reads the container output and returns the verdict of the first case that is not AC.
-  # : (String, Array[Hash[Symbol, String]]) -> Result
-  def collect: (String, Array[Hash[Symbol, String]]) -> Result
+  # The docker stderr goes into the message when the container left no trace: without it,
+  # an infrastructure failure (mount denied, daemon down) is indistinguishable from a
+  # crashing submission.
+  # : (String, Array[Hash[Symbol, String]], String) -> Result
+  def collect: (String, Array[Hash[Symbol, String]], String) -> Result
 
   # Maps a non-zero exit status to its verdict.
   # : (Integer) -> String
   def runtime_verdict: (Integer) -> String
+
+  # Prefers what docker printed over a generic message when the container left no files.
+  # : (String, String) -> String
+  def no_trace_message: (String, String) -> String
 
   # Compares actual output against expected byte by byte, distinguishing WA from PE.
   # Comparison is on bytes because the expected output arrives from a binary column and
@@ -94,6 +101,6 @@ class Judge
 
   # Reads the single case's output, refusing anything that did not exit cleanly. Read as
   # bytes: what is stored must be what the program printed, down to the byte (ADR-0003).
-  # : (String) -> String
-  def output: (String) -> String
+  # : (String, String) -> String
+  def output: (String, String) -> String
 end
