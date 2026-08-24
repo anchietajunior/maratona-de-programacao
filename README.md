@@ -43,6 +43,16 @@ docker run -d --name maratona-mysql --restart unless-stopped `
 
 Use MySQL 8: a collation padrão `utf8mb4_0900_ai_ci` é a que o projeto assume (ADR-0003).
 
+O juiz monta diretórios temporários de `C:\Users\...\AppData\Local\Temp` dentro do
+container.
+Com o backend Hyper-V do Docker Desktop, isso exige compartilhar o drive `C:` em
+*Settings > Resources > File Sharing* - sem isso o Docker recusa o mount com
+"path is not shared from the host" e toda submissão fica pendente para sempre.
+Com o backend WSL 2 (*Settings > General > Use the WSL 2 based engine*), funciona sem
+configuração.
+Depois de qualquer suspeita, rode `bundle exec rails maratona:doctor` - ele testa a
+fila, o Docker, o bind mount e um julgamento real de ponta a ponta.
+
 ### Preparando
 
 ```powershell
