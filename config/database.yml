@@ -27,6 +27,10 @@ development:
     <<: *default
     database: maratona_development_queue
     migrations_paths: db/queue_migrate
+  cable:
+    <<: *default
+    database: maratona_development_cable
+    migrations_paths: db/cable_migrate
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
