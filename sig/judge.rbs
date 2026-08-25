@@ -69,7 +69,9 @@ class Judge
   # : (String, String, Array[Hash[Symbol, String]]) -> void
   def prepare: (String, String, Array[Hash[Symbol, String]]) -> void
 
-  # Executes the submission in a throwaway container.
+  # Executes the submission in a throwaway container. What docker prints goes to a file,
+  # never to a pipe: the jobs process freezes reading a pipe the container runtime leaves
+  # open on the Windows host (ADR-0012).
   # : (String) -> [ String, String, Process::Status ]
   def run_container: (String) -> [ String, String, Process::Status ]
 

@@ -2,7 +2,6 @@
 
 require "tmpdir"
 require "fileutils"
-require "open3"
 
 # Runs submitted Python code against a problem's test cases and returns one of the seven
 # verdicts defined in Art. 26 of the regulation.
@@ -110,10 +109,15 @@ class Judge
     FileUtils.chmod(0o777, "#{dir}/out")
   end
 
-  # Executes the submission in a throwaway container.
+  # Executes the submission in a throwaway container. What docker prints goes to a file,
+  # never to a pipe: the jobs process freezes reading a pipe the container runtime leaves
+  # open on the Windows host (ADR-0012).
   #: (String) -> [ String, String, Process::Status ]
   def run_container(dir)
-    Open3.capture3(
+    stdout = "#{dir}/docker.out"
+    stderr = "#{dir}/docker.err"
+
+    pid = Process.spawn(
       "docker", "run", "--rm",
       "--network=none",
       "--memory=#{@memory}", "--memory-swap=#{@memory}",
@@ -126,8 +130,12 @@ class Judge
       "-e", "CE_EXIT=#{CE_EXIT}",
       "-v", "#{dir}/code:/code:ro",
       "-v", "#{dir}/out:/out",
-      @image, "sh", "-c", SCRIPT
+      @image, "sh", "-c", SCRIPT,
+      out: stdout, err: stderr
     )
+    _, status = Process.wait2(pid)
+
+    [ File.read(stdout), File.read(stderr), status ]
   end
 
   # Reads the container output and returns the verdict of the first case that is not AC.
