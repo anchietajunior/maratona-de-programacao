@@ -45,9 +45,12 @@ Use MySQL 8: a collation padrão `utf8mb4_0900_ai_ci` é a que o projeto assume 
 
 O juiz monta diretórios temporários de `C:\Users\...\AppData\Local\Temp` dentro do
 container.
-Com o backend Hyper-V do Docker Desktop, isso exige compartilhar o drive `C:` em
-*Settings > Resources > File Sharing* - sem isso o Docker recusa o mount com
-"path is not shared from the host" e toda submissão fica pendente para sempre.
+Sem o WSL 2 instalado, o Docker Desktop sobe a própria VM e começa sem nenhum diretório
+compartilhado: é preciso adicionar `C:\Users` (e a pasta do projeto) em
+*Settings > Resources > File Sharing* e reiniciar o Docker Desktop. Sem isso o Docker
+recusa o mount com "path is not shared from the host" - toda submissão fica pendente para
+sempre e nenhum caso de teste chega a ser cadastrado, porque a saída esperada também nasce
+de um container (ADR-0003).
 Com o backend WSL 2 (*Settings > General > Use the WSL 2 based engine*), funciona sem
 configuração.
 Depois de qualquer suspeita, rode `bundle exec rails maratona:doctor` - ele testa a
@@ -84,8 +87,12 @@ Descubra o IP da máquina com `ipconfig` (campo "Endereço IPv4").
 ### Testes
 
 ```powershell
-bundle exec rails test
+$env:PARALLEL_WORKERS="1"; bundle exec rails test
 ```
+
+O `PARALLEL_WORKERS=1` não é opcional aqui: o runner paralelo do Rails cria os processos
+com `fork`, que não existe no Ruby do Windows - a mesma razão pela qual a fila roda em
+modo `async`.
 
 ### Por que a fila roda em modo `async`
 
