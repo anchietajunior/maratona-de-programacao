@@ -18,6 +18,9 @@ default: &default
   username: root
   password: 12345
   host: <%= ENV.fetch("DB_HOST") { "127.0.0.1" } %>
+  # docs/adr/0013-conexao-mysql-em-utc.md
+  variables:
+    time_zone: "+00:00"
 
 development:
   primary:
