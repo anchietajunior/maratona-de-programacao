@@ -1,0 +1,8 @@
+<% content_for :title, t(".title", nickname: @user.nickname) %>
+
+<%= render "layouts/staff_nav" %>
+
+<h1 class="text-display-md"><%= t(".title", nickname: @user.nickname) %></h1>
+<p class="mt-sm max-w-prose text-body-sm text-muted"><%= t(".subtitle") %></p>
+
+<%= render "staff/users/form", user: @user %>

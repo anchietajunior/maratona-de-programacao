@@ -291,6 +291,10 @@ O coração das regras. É onde o evento ganha ou perde credibilidade.
       lado de cada Equipe conectada (exigido pelo ADR-0009)
 - [x] **9.4 Publicação da Classificação** — `resource :publication`, reversível. Antes dela,
       `/standings` manda a Equipe de volta ao Placar Individual (Art. 28)
+- [x] **9.5 Gerenciar equipes (staff)** — `/staff/users`, nome e senha de cada Equipe.
+      Senha em branco mantém a atual (comportamento do `has_secure_password`); o escopo
+      `User.competing` deixa staff fora do alcance da tela por construção, e o apelido
+      não muda — ele é a credencial (ADR-0011)
   - O estado ficou em `contests.published_at`, não numa tabela `publications`: é o terceiro
     instante do ciclo da Competição, e mora junto de `started_at` e `ended_at`
 

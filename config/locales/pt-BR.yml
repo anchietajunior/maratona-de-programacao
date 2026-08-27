@@ -8,6 +8,7 @@ pt-BR:
     dashboard: "Painel"
     scoreboard: "Placar"
     problems: "Problemas"
+    users: "Equipes"
     submissions: "Submissões"
     clarifications: "Esclarecimentos"
     balloons: "Balões"
@@ -279,6 +280,24 @@ pt-BR:
     sessions:
       destroy:
         destroyed: "Sessão encerrada. A equipe já pode entrar de novo."
+    users:
+      index:
+        title: "Equipes"
+        subtitle:
+          zero: "Nenhuma equipe cadastrada."
+          one: "1 equipe cadastrada."
+          other: "%{count} equipes cadastradas."
+        edit: "Editar"
+      edit:
+        title: "Editar %{nickname}"
+        subtitle: "O apelido é a credencial de login e não muda. A senha nova vale a partir do próximo login; quem já está logado continua logado."
+      form:
+        name: "Nome da equipe"
+        password: "Nova senha"
+        password_hint: "Deixe em branco para manter a senha atual."
+        submit: "Salvar"
+      update:
+        updated: "Equipe atualizada."
     deliveries:
       create:
         created: "Balão registrado como entregue."
@@ -322,6 +341,9 @@ pt-BR:
         difficulty: "Nível de dificuldade"
       testcase:
         input: "Entrada"
+      user:
+        name: "Nome da equipe"
+        password: "Senha"
       submission:
         code: "Código"
       clarification:

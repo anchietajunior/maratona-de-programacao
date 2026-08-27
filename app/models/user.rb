@@ -11,6 +11,8 @@ class User < ApplicationRecord
 
   normalizes :nickname, with: ->(nickname) { nickname.strip.downcase }
 
+  validates :name, presence: true
+
   scope :competing, -> { where(staff: false) }
 
   # Uma Equipe usa um computador só, então já tem Sessão ativa em outra máquina.

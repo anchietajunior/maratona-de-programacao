@@ -1,0 +1,18 @@
+<% content_for :title, t(".title") %>
+
+<%= render "layouts/staff_nav" %>
+
+<h1 class="text-display-md"><%= t(".title") %></h1>
+<p class="mt-sm max-w-prose text-body-sm text-muted"><%= t(".subtitle", count: @users.size) %></p>
+
+<ul class="mt-xl divide-y divide-hairline rounded-lg border border-hairline bg-surface-card">
+  <% @users.each do |user| %>
+    <li class="flex flex-wrap items-center justify-between gap-sm px-base py-sm">
+      <div>
+        <%= link_to user.name, edit_staff_user_path(user), class: "text-body-md text-ink" %>
+        <span class="ml-xs text-body-sm text-muted"><%= user.nickname %></span>
+      </div>
+      <%= link_to t(".edit"), edit_staff_user_path(user), class: "text-nav-link text-ink underline" %>
+    </li>
+  <% end %>
+</ul>

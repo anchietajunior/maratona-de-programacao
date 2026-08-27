@@ -1,0 +1,27 @@
+<%= form_with model: [ :staff, user ], class: "mt-xl max-w-prose" do |form| %>
+  <% if user.errors.any? %>
+    <div class="mb-lg rounded-md border border-hairline-strong bg-surface-card p-base">
+      <ul class="text-body-sm text-error">
+        <% user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-base">
+    <%= form.label :name, t("staff.users.form.name"), class: "block text-body-sm text-body" %>
+    <%= form.text_field :name, required: true,
+          class: "mt-xxs block h-[44px] w-full rounded-md border border-hairline-strong bg-surface-card px-base text-body-md text-ink focus:outline-primary" %>
+  </div>
+
+  <div class="mb-lg">
+    <%= form.label :password, t("staff.users.form.password"), class: "block text-body-sm text-body" %>
+    <p class="text-body-sm text-muted"><%= t("staff.users.form.password_hint") %></p>
+    <%= form.password_field :password, autocomplete: "new-password",
+          class: "mt-xxs block h-[44px] w-full rounded-md border border-hairline-strong bg-surface-card px-base text-body-md text-ink focus:outline-primary" %>
+  </div>
+
+  <%= form.submit t("staff.users.form.submit"),
+        class: "h-[40px] cursor-pointer rounded-md bg-primary px-md text-button text-on-primary" %>
+<% end %>
