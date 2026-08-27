@@ -5,6 +5,37 @@ Informação da UniRios. Leia o `CLAUDE.md` e o `docs/ROADMAP.md` antes de mexer
 
 No macOS e no Linux, use `bin/setup` e depois `bin/dev`.
 
+## Populando o banco com os problemas
+
+Os 10 problemas da prova moram em `db/seeds.rb` - enunciado, solução de referência e as
+entradas dos casos de teste.
+A saída esperada de cada caso não está no arquivo: ela nasce de rodar a solução de
+referência em container (ADR-0003), então o seed exige o Docker ligado e a imagem
+`python:3.12-slim` presente.
+
+No macOS e no Linux:
+
+```bash
+bin/rails db:seed
+```
+
+No Windows:
+
+```powershell
+bundle exec rails db:seed
+```
+
+O seed é idempotente: rodar de novo não duplica nada, só cria o que falta.
+Além dos problemas, ele cria as duas comissões (`staff01`, `staff02`) e as 15 equipes
+(`equipe01` a `equipe15`), todas com a senha `12345` - defina `SEED_PASSWORD` para trocar.
+
+Duas pegadinhas:
+
+- O `db:prepare` só roda o seed quando cria o banco pela primeira vez.
+  Num banco que já existe, rode `db:seed` explicitamente.
+- Se algum problema foi cadastrado à mão pelo painel, o seed para com
+  "Position já está em uso" - apague o problema manual pelo painel e rode de novo.
+
 ## Rodando no Windows
 
 Nada de `bin/` no Windows: `bin/dev` é um script `sh`, e o PowerShell/cmd ignora a linha
