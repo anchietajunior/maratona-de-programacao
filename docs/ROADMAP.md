@@ -45,7 +45,7 @@ shell. Como o Brakeman não distingue a forma argv, a exceção está registrada
 inteira em `config/brakeman.ignore`. **Ao mexer em `run_container`, refaça a análise** em
 vez de regerar a impressão digital.
 
-Próxima task: `10.1 — Calibrar TIME_LIMIT`, que depende dos 10 problemas reais (10.5).
+Próxima task: `10.1 — Calibrar TIME_LIMIT` — os 10 problemas (10.5) já estão nos seeds.
 
 ---
 
@@ -320,7 +320,14 @@ Nada aqui é código. É o que costuma explodir por ficar para a véspera.
       imagem `python:3.12-slim` já presente, binário do Tailwind já baixado, assets locais
       (ADR-0005)
 - [ ] **10.4 Teste de carga** — 15 equipes submetendo ao mesmo tempo no minuto final
-- [ ] **10.5 Cadastrar os 10 problemas reais** com casos de teste validados
+- [x] **10.5 Cadastrar os 10 problemas reais** com casos de teste validados — moram nos
+      seeds (1.5), fechando os 180 pontos do Art. 19: 4 fáceis (Palíndromo, Par ou Ímpar,
+      Contagem de Vogais, Média das Notas), 4 médios (Fibonacci, Número Primo, Anagramas,
+      Máximo Divisor Comum) e 2 difíceis (Parênteses Balanceados, Soma Máxima)
+  - Cada Problema tem um caso por erro clássico, comentado no seed — e os médios/difíceis
+    têm um caso grande que derruba a solução ingênua por tempo (recursão no Fibonacci,
+    laço até N no Primo, subtração no MDC, soma O(n²) na Soma Máxima), o material que a
+    10.1 precisa para calibrar o `TIME_LIMIT`
 - [ ] **10.6 Ensaio geral com pessoas** — algumas equipes reais, uma hora, antes do dia
 
 ---
